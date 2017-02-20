@@ -3,20 +3,10 @@ __author__ = 'Nikita'
 import os
 import sys
 
-
-def is_digit(ch):
-    return '0' <= ch <= '9'
+import scanner.scan as scanner
 
 
-def is_space(ch):
-    return ch == ' '
-
-
-def is_kw_write(ch):
-    return ch.lower() == 'write'
-
-
-def printer(row, lex, val):
+def print_lexema(row, lex, val):
     print('{}   lex:{}  val:{}'.format(row, lex, val))
 
 
@@ -28,24 +18,23 @@ def string_former(line, current_column, shift):
 
 if __name__ == '__main__':
     line = input('Write line: ')
-    # line2 = input('Write line: ')
-    # line = line1 + line2
+
     current_row = 1
     current_column = 1
     shift = 0
-    # for line in lines:
+
     while current_column + shift <= len(line):
         ch = string_former(line, current_column, shift)
-        if is_kw_write(ch):
-            printer(current_row, 'Write', 'write')
+        if scanner.is_kw_write(ch):
+            print_lexema(current_row, 'Write', 'write')
             current_column, shift = current_column + shift + 1, 0
             continue
-        elif is_digit(ch):
-            printer(current_row, 'Int', ch)
+        elif scanner.is_digit(ch):
+            print_lexema(current_row, 'Int', ch)
             current_column, shift = current_column + shift + 1, 0
             continue
-        elif is_space(ch):
-            printer(current_row, 'Space', ch)
+        elif scanner.is_space(ch):
+            print_lexema(current_row, 'Space', ch)
             current_column, shift = current_column + shift + 1, 0
             continue
         shift += 1

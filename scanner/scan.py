@@ -1,10 +1,15 @@
 __author__ = 'Nikita'
 
 
-# TODO Numbers
+
+
+# TODO Numbers and IDS
 def is_digit(ch):
     return '0' <= ch <= '9'
 
+
+def is_id(ch):
+    return 'a' <= ch.lower() <= 'z'  # TODO replace for abc1
 
 # TODO Sintaksis
 def is_space(ch):
@@ -29,4 +34,12 @@ def is_kw_write(ch):
 
 
 def is_kw_read(ch):
-    return ch.lower()== 'read'
+    return ch.lower() == 'read'
+
+
+def is_kw_end(ch):
+    return ch.lower() == 'end'
+
+
+def is_kw_goto(ch):
+    return ch.lower() == 'goto'

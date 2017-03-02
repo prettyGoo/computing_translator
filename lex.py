@@ -1,8 +1,8 @@
 __author__ = 'Nikita'
 
 from scanner.sintaksis import *
-from scanner.key_words import *
-from scanner.numbers import *
+from scanner.key_words import *  # TODO ADD ALL KEY WORDS
+from scanner.numbers import *   # TODO UPDATE PREFIXES FOR INT FORMS
 
 
 def print_lexema(row, lex, val):
@@ -24,6 +24,8 @@ def work_with_buffer(buffer):
     elif is_dec_int(buffer) or is_bin_int(buffer) or is_oct_int(buffer) or is_hex_int(buffer):
         print_lexema(current_row, 'Int', buffer)
     # REAL
+    elif is_real(buffer):
+        print_lexema(current_row, 'Real', buffer)
     # ID
     elif is_id(buffer):
         print_lexema(current_row, 'Id', buffer)
@@ -35,7 +37,12 @@ def work_with_buffer(buffer):
 current_row = 1
 buffer = ''
 
-line = 'b011 c122 Ha 12\x03'
+
+test_numbers = '1 12 d12 b11 b22 c77 c88 h1a\x03'
+test_real = '12e1 12e+3 12e-3 12. 12.3 12.e1 12.3e1 12.3e+3 12.3e-3 .12 .12e1 .12e+3 .12e-3\x10.e+ 12.3e 12.3e- 12.e3+\x03'
+
+
+line = test_real
 separators = {'space': ' ', 'tab': '\x09', 'new_line': '\x10', 'eot': '\x03'}
 for symbol in line:
     if symbol in separators.values():

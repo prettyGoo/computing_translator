@@ -11,7 +11,7 @@ def is_bin_int(chars):
 
     chars = chars.replace('b', '')
     for ch in chars:
-        if ch <= "0" or ch >= "1":
+        if ch < "0" or ch > "1":
             return False
     return True
 
@@ -22,9 +22,9 @@ def is_oct_int(chars):
     if not re.match(pattern, chars):
         return False
 
-    chars = chars.replace('b', '')
+    chars = chars.replace('c', '')
     for ch in chars:
-        if ch <= "0" or ch >= "7":
+        if ch < "0" or ch > "7":
             return False
     return True
 
@@ -32,11 +32,11 @@ def is_oct_int(chars):
 def is_dec_int(chars):
     chars = chars.lower()
     pattern = r'd'
-    if not re.match(pattern, chars):
+    if re.match(pattern, chars):
         chars = chars.replace('d', '')
 
     for ch in chars:
-        if ch <= "0" or ch >= "9":
+        if ch < "0" or ch > "9":
             return False
     return True
 
@@ -53,3 +53,17 @@ def is_hex_int(chars):
         if not ('0' <= ch <= '9' or 'a' <= ch <= 'f'):
             return False
     return True
+
+
+# REAL
+def is_real(chars):
+    pattern_one = r'\d*e(\+|\-)?\d+$'
+    pattern_two = r'\d*.\d*(e(\+|\-)?\d+)?$'
+    if re.match(pattern_one, chars):
+        # print('pattern one')
+        return True
+    elif re.match(pattern_two, chars):
+        # print('pattern two')
+        return True
+    else:
+        return False

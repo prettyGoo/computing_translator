@@ -3,7 +3,7 @@ __author__ = 'Nikita'
 import os
 import sys
 
-import scanner.scan as scanner
+import scanner.key_words as scanner
 
 
 def print_lexema(row, lex, val):
@@ -16,9 +16,22 @@ def string_former(line, current_column, shift):
         s += line[current_column-1+i]
     return s
 
-if __name__ == '__main__':
-    line = input('Write line: ')
 
+def line_slitter(line):
+    """
+    :param line:
+    :return: list of
+    """
+    l = line.split(' ')
+    for a in l:
+        if len(a) == 1:
+            print(ord(a))
+    print(l)
+
+if __name__ == '__main__':
+    # line = input('Write line: ')
+    line = 'write abc7 goto end 1 read'
+    line = line.split(' ')  # TODO Make it valid for every splitter (comment, tab, space, new line)
     current_row = 1
     current_column = 1
     shift = 0

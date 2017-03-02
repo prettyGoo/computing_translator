@@ -3,7 +3,7 @@ __author__ = 'Nikita'
 import os
 import sys
 
-import scanner.scan as scanner
+import scanner.key_words as scanner
 
 
 def print_lexema(row, lex, val):

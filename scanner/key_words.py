@@ -1,6 +1,6 @@
 __author__ = 'Nikita'
 
-
+import scanner.sintaksis
 
 
 # TODO Numbers and IDS
@@ -10,22 +10,6 @@ def is_digit(ch):
 
 def is_id(ch):
     return 'a' <= ch.lower() <= 'z'  # TODO replace for abc1
-
-# TODO Sintaksis
-def is_space(ch):
-    return ch == ' '
-
-
-def is_comma(ch):
-    return ch == ','
-
-
-def is_colon(ch):
-    return ch == ':'
-
-
-def is_semicolon(ch):
-    return ch == ':'
 
 
 # TODO Keywords
@@ -43,3 +27,16 @@ def is_kw_end(ch):
 
 def is_kw_goto(ch):
     return ch.lower() == 'goto'
+
+
+# LOOPS
+def is_kw_while(ch):
+    return ch.lower() == 'while'
+
+
+def is_kw_loop(ch):
+    return ch.lower() == 'loop'
+
+
+def is_kw_do(ch):
+    return ch.lower() == 'do'

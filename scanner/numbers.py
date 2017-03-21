@@ -2,11 +2,14 @@ __author__ = 'Nikita'
 
 import re
 
+# INTEGERS
 
 def is_bin_int(chars):
     chars = chars.lower()
-    pattern = r'b'
-    if not re.match(pattern, chars):
+
+    # pattern = r'b'
+    # if not re.match(pattern, chars):
+    if not chars.endswith("b"):
         return False
 
     chars = chars.replace('b', '')
@@ -18,8 +21,7 @@ def is_bin_int(chars):
 
 def is_oct_int(chars):
     chars = chars.lower()
-    pattern = r'c'
-    if not re.match(pattern, chars):
+    if not chars.endswith("c"):
         return False
 
     chars = chars.replace('c', '')
@@ -31,8 +33,7 @@ def is_oct_int(chars):
 
 def is_dec_int(chars):
     chars = chars.lower()
-    pattern = r'd'
-    if re.match(pattern, chars):
+    if chars.endswith('d'):
         chars = chars.replace('d', '')
 
     for ch in chars:
@@ -43,13 +44,11 @@ def is_dec_int(chars):
 
 def is_hex_int(chars):
     chars = chars.lower()
-    pattern = r'h'
-    if not re.match(pattern, chars):
+    if chars.endswith('h'):
         return False
 
     chars = chars.replace('h', '')
     for ch in chars:
-        ch = ch.lower()
         if not ('0' <= ch <= '9' or 'a' <= ch <= 'f'):
             return False
     return True

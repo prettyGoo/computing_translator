@@ -14,12 +14,14 @@ def error_handler(buffer):
 
 
 def work_with_buffer(buffer):
+    # KEYWORDS
     if is_kw_write(buffer):
         print_lexema(current_row, 'Write', 'write')
     elif is_kw_read(buffer):
         print_lexema(current_row, 'Read', buffer)
     elif is_kw_end(buffer):
         print_lexema(current_row, 'End', 'end')
+    # OPERATORS
     # INTEGERS
     elif is_dec_int(buffer) or is_bin_int(buffer) or is_oct_int(buffer) or is_hex_int(buffer):
         print_lexema(current_row, 'Int', buffer)
@@ -29,8 +31,10 @@ def work_with_buffer(buffer):
     # ID
     elif is_id(buffer):
         print_lexema(current_row, 'Id', buffer)
+    # SINTAKSIS
     elif is_space(buffer):
         return
+    # ERROR
     else:
         error_handler(buffer)
 

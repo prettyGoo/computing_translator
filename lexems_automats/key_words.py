@@ -1,7 +1,7 @@
 __author__ = 'Nikita'
 
 import scanner.sintaksis
-
+import re
 
 # TODO Numbers and IDS
 def is_digit(ch):
@@ -13,8 +13,14 @@ def is_id(ch):
 
 
 # TODO Keywords
-def is_kw_write(ch):
-    return ch.lower() == 'write'
+# def is_kw_write(ch):
+#     return ch.lower() == 'write'
+	
+def is_kw_write(chars):
+    return chars == 'write'
+
+
+
 
 
 def is_kw_read(ch):

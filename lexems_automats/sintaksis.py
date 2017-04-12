@@ -6,11 +6,11 @@ def is_space(ch):
 
 
 def is_tab(ch):
-    return ch == '\x09'
+    return ch == '\t'
 
 
-def is_skip(ch):
-    return ch == '\x10'
+def is_new_line(ch):
+    return ch == '\n'
 
 
 def is_comma(ch):
@@ -25,5 +25,5 @@ def is_semicolon(ch):
     return ch == ':'
 
 
-def is_eot(ch):
-    return ch == '\x03'
+def is_eof(ch):
+    return not ch

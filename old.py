@@ -1,7 +1,5 @@
 __author__ = 'Nikita'
 
-import sys
-
 from scanner.sintaksis import *
 from scanner.key_words import *  # TODO ADD ALL KEY WORDS
 from scanner.numbers import *   # TODO UPDATE PREFIXES FOR INT FORMS
@@ -50,72 +48,11 @@ test_real = '12e1 12e+3 12e-3 12. 12.3 12.e1 12.3e1 12.3e+3 12.3e-3 .12 .12e1 .1
 
 line = test_real
 separators = {'space': ' ', 'tab': '\x09', 'new_line': '\x10', 'eot': '\x03'}
-
-
-
-
-try:
-    file = open('code.txt', 'r')
-except FileNotFoundError:
-    print('Aborted: the file you are looking for does not exist\n')
-    sys.exit(0)
-
-line = 1
-base_column = file.tell()
-offset = base_column + 1
-
-
-def unset():
-    file.seek(base_column)
-    offset = base_column + 1
-
-
-def next_symbol():
-    return file.read(1)
-
-
-
-#lexema
-#
-while True {
-    lexema = 
-}
-
-
-
-
-for _ in range(30):
-    chars_buffer = file.read(offset-from_what) # if there is nothing to read - EOF - read() returns the string of lenght 0
-
-    # next_automata = False
-
-    # 1 - true, 0 - not know, -1 - false
-    while True:
-        if is_kw_write(buffer) == 1:
-            print_lexema(buffer, 'Write', 'write')
-        elif is_kw_write(buffer) == 0:
-            offset += 1
-            buffer = file.read(offset-from_what)
-        elif is_kw_write(buffer) == -1:
-            offset = from_what + 1
-            break
-
-    # is_kw_write(read_string):
-    #     print_lexema(current_row, 'Write', 'write')
-    # elif is_kw_read(read_string):
-    #     print_lexema(current_row, 'Read', buffer)
-
-    # if len(read_string) == 0:
-    #     print('EOF')
-    #     break
-
-    # from_what = offset
-
-# for symbol in line:
-#     if symbol in separators.values():
-#         work_with_buffer(buffer)
-#         buffer = ''
-#         if symbol == '\n':
-#             current_row += 1
-#     else:
-#         buffer += symbol
+for symbol in line:
+    if symbol in separators.values():
+        work_with_buffer(buffer)
+        buffer = ''
+        if symbol == '\n':
+            current_row += 1
+    else:
+        buffer += symbol

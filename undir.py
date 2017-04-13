@@ -1,6 +1,5 @@
 import sys
 
-from lexems_automats.base import is_digit, is_hex_digit, is_letter
 from lexems_automats.indetificators import Is_id_or_kw
 from lexems_automats.numbers import Is_dec_int
 from lexems_automats.sintaksis import is_space, is_new_line, is_eof
@@ -21,34 +20,7 @@ offset = 1
 
 
 def get_scanner_params():
-    global lexema
-    global row
-    global base_position
-    global offset
-
     return file, lexema, row, base_position, offset
-
-
-def is_dec_int():
-    global base_position
-    global offset
-
-    new_offset = 1
-    char = file.read(1)
-    if is_digit(char):
-        while True:
-            char = file.read(1)
-            if is_digit(char):
-                new_offset += 1
-            else:
-                break
-        if not is_letter(char):
-            offset = new_offset
-            return True
-        else:
-            return False
-    else:
-        return False
 
 
 def seek_new_position():

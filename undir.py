@@ -2,7 +2,7 @@ import sys
 
 from lexems_automats.indetificators import Is_id_or_kw
 from lexems_automats.numbers import Is_dec_int
-from lexems_automats.sintaksis import is_space, is_new_line, is_eof
+from lexems_automats.sintaksis import *
 
 from lexems_printer import print_lexeme
 
@@ -31,9 +31,15 @@ def seek_new_position():
     offset = 1
 
 
-def get_next_lexema():
+def tell_new_position():
+    global base_position
+    global offset
 
-    global lexema
+    base_position = file.tell()
+    offset = 1
+
+
+def get_next_lexema():
 
     global base_position
     global offset
@@ -43,22 +49,20 @@ def get_next_lexema():
         char = file.read(1).lower()
 
         if is_eof(char):
-            lexema = 'EOF'
-            return lexema
+            return 'EOF'
 
         if is_space(char):
-            lexema = 'Space'
-            base_position = file.tell()
-            offset = 1
-            return lexema
+            tell_new_position()
+            return 'Space'
+
+        if is_tab(char):
+            tell_new_position()
+            return 'Tab'
 
         if is_new_line(char):
-            lexema = 'NewLine'
-            base_position = file.tell()
-            offset = 1
+            tell_new_position()
             row += 1
-            seek_new_position()
-            return lexema
+            return 'NewLine'
         """ if no split char was detected it means that the char is valuable and file position must be unset """
         file.seek(base_position)
 

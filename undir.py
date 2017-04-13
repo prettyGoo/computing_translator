@@ -2,7 +2,7 @@ import sys
 import re
 
 from lexems_automats.key_words import *
-from lexems_automats.numbers import is_dec_int
+# from lexems_automats.numbers import
 from lexems_automats.sintaksis import is_space, is_new_line, is_eof
 
 try:
@@ -14,7 +14,30 @@ except FileNotFoundError:
 lexema = 'NoLex'
 row = 1
 base_position = 0
-offset = 0
+offset = 1
+
+
+def is_digit(char):
+    return '0' <= char <= '9'
+
+
+def is_letter(char):
+    return 'a' <= char <= 'z'
+
+
+def is_dec_int():
+    global base_position
+    global offset
+
+    char = file.read(1)
+    offset += 1
+    while is_digit(char):
+        char = file.read(1)
+        offset += 1
+    if not is_letter(char):
+        return True
+    else:
+        return False
 
 
 def print_lexema(lexema):
@@ -29,48 +52,45 @@ def print_lexema(lexema):
 
 
 def unset():
-    # global base_position
-    # global offset
+    global base_position
+    global offset
 
     file.seek(base_position)
-    offset = base_position + 1
+    offset = 1
 
 
 def seek_new_position():
     global base_position
     global offset
-    base_position += (offset + 1)
-    file.seek(base_position)
 
-
-def is_new_line(char):
-    return char == '\n'
-
-
-
-def is_eof(char):
-    return not char  # empty string - EOF - is always False
+    base_position = file.tell()
+    offset = 1
 
 
 def get_next_char():
     global offset
-    global row
 
-    offset += 1
     next_char = file.read(1)
     return next_char
 
 
+def get_next_chars():
+    global offset
+
+    next_chars = file.read(offset)
+    return next_chars
+
+
 def get_next_lexema():
+
+    global lexema
 
     global base_position
     global offset
     global row
 
-
-    lexema = 'EmptyLex'
     while True:  # while no stop char have been met
-        char = get_next_char().lower()
+        char = file.read(1).lower()
 
         if is_eof(char):
             lexema = 'EOF'
@@ -84,14 +104,17 @@ def get_next_lexema():
             row += 1
             seek_new_position()
             break
-
         unset()
-        chars = file.read(offset-base_position).lower()
 
-        if is_dec_int(chars):
-            lexema = 'Integer'
+
+        if is_dec_int():
+            lexema = 'DECINT'
             seek_new_position()
             return lexema
+        unset()
+
+        chars = file.read(offset).lower()
+        offset += 1
 
         if is_kw_write(chars):
             lexema = 'Write'

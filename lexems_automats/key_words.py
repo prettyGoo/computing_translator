@@ -1,26 +1,8 @@
 __author__ = 'Nikita'
 
-import scanner.sintaksis
-import re
 
-# TODO Numbers and IDS
-def is_digit(ch):
-    return '0' <= ch <= '9'
-
-
-def is_id(ch):
-    return 'a' <= ch.lower() <= 'z'  # TODO replace for abc1
-
-
-# TODO Keywords
-# def is_kw_write(ch):
-#     return ch.lower() == 'write'
-	
 def is_kw_write(chars):
-    return chars == 'write'
-
-
-
+    return chars.lower() == 'write'
 
 
 def is_kw_read(ch):
@@ -35,7 +17,6 @@ def is_kw_goto(ch):
     return ch.lower() == 'goto'
 
 
-# LOOPS
 def is_kw_while(ch):
     return ch.lower() == 'while'
 

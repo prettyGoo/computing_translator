@@ -2,11 +2,7 @@ __author__ = 'Nikita'
 
 import lexems_automats.key_words
 
-from lexems_automats.numbers import is_digit
-
-
-def is_letter(char):
-    return 'a' <= char <= 'z'
+from lexems_automats.base import is_digit, is_hex_digit, is_letter
 
 
 def Is_id_or_kw(scanner_params):
@@ -39,5 +35,5 @@ def Is_id_or_kw(scanner_params):
         return True, {'offset': local_offset, 'lexeme': local_lexeme}
     else:
         file.seek(base_position)
-        return False
+        return False, {}
 

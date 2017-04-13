@@ -1,9 +1,8 @@
 import sys
-import re
 
-from lexems_automats.indetificators import Is_id_or_kw, is_letter
-
-from lexems_automats.numbers import is_digit, is_hex_digit
+from lexems_automats.base import is_digit, is_hex_digit, is_letter
+from lexems_automats.indetificators import Is_id_or_kw
+from lexems_automats.numbers import Is_dec_int
 from lexems_automats.sintaksis import is_space, is_new_line, is_eof
 
 from lexems_printer import print_lexeme
@@ -56,27 +55,8 @@ def seek_new_position():
     global base_position
     global offset
 
-    base_position = file.tell()
+    file.seek(base_position)
     offset = 1
-
-
-# def get_next_char(with_offset=False):
-#     global offset
-#
-#     next_char = file.read(1).lower()
-#     if with_offset:
-#         offset += 1
-#
-#     return next_char
-#
-#
-# def get_next_chars(with_offset=False):
-#     global offset
-#
-#     next_chars = file.read(offset).lower()
-#     if with_offset:
-#         offset += 1
-#     return next_chars
 
 
 def get_next_lexema():
@@ -111,19 +91,17 @@ def get_next_lexema():
         file.seek(base_position)
 
         """ read inside automata """
-        if is_dec_int():
-            lexema = 'DecInt'
-            base_position += offset
-            file.seek(base_position)
-            offset = 1
-            return lexema
+        success, rest = Is_dec_int(get_scanner_params())
+        if success:
+            base_position += rest['offset']
+            seek_new_position()
+            return rest['lexeme']
         file.seek(base_position)
 
         success, rest = Is_id_or_kw(get_scanner_params())
         if success:
             base_position += rest['offset']
-            file.seek(base_position)
-            offset = 1
+            seek_new_position()
             return rest['lexeme']
         file.seek(base_position)
 

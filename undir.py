@@ -2,6 +2,7 @@ import sys
 import re
 
 from lexems_automats.key_words import *
+import lexems_automats.key_words
 from lexems_automats.numbers import is_digit, is_hex_digit
 from lexems_automats.sintaksis import is_space, is_new_line, is_eof
 
@@ -32,34 +33,28 @@ def is_id_or_kw():
     local_offset = 0
 
     char = file.read(1)
-
+    local_offset += 1
     if is_letter(char):
         while True:
-            file.seek(base_position)
-            chars = file.read(local_offset+1).lower()
-            local_offset += 1
-
-            if is_kw_write(chars):
-                local_lexeme = 'Write'
-                break
-
-            if is_kw_read(chars):
-                local_lexeme = 'Read'
-                break
-        char = file.read(1)
-        if not is_digit(char):
-            if not is_letter(char):
-                offset = local_offset
-                lexema = local_lexeme
-                return True
-        local_offset += 1
-        while True:
             char = file.read(1).lower()
-            if not (is_letter(char) or is_digit(char)):
-                offset = local_offset
-                lexema = 'Id'
+            if is_digit(char) or is_letter(char):
+                local_offset += 1
+                continue
+            else:
+                local_lexeme = 'Id'
                 break
-            local_offset += 1
+
+        # checks if it is really Id or KeyWord
+        file.seek(base_position)
+        chars = file.read(local_offset).lower()
+        for _, function in lexems_automats.key_words.__dict__.items():
+            if callable(function):
+                success, returned_lexeme = function(chars)
+                if success:
+                    local_lexeme = returned_lexeme
+                    break
+        offset = local_offset
+        lexema = local_lexeme
         return True
     else:
         file.seek(base_position)
@@ -151,27 +146,16 @@ def get_next_lexema():
             lexema = 'DecInt'
             base_position += offset
             file.seek(base_position)
+            offset = 1
             return lexema
         file.seek(base_position)
 
         if is_id_or_kw():
             base_position += offset
             file.seek(base_position)
+            offset = 1
             return lexema
         file.seek(base_position)
-        # chars = file.read(offset).lower()
-        # offset += 1
-        #
-        # # """ read inside automata """
-        # if is_kw_write(chars):
-        #     lexema = 'Write'
-        #     seek_new_position()
-        #     return lexema
-        #
-        # if is_kw_read(chars):
-        #     lexema = 'Read'
-        #     seek_new_position()
-        #     return lexema
 
 
 while True:

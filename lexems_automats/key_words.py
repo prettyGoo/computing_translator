@@ -2,35 +2,28 @@ __author__ = 'Nikita'
 
 
 def is_kw_write(chars):
-    lexeme = 'Write'
-    return chars == lexeme, lexeme
+    return chars == 'write', 'Write'
 
 
 def is_kw_read(chars):
-    lexeme = 'Read'
-    return chars == lexeme, lexeme
+    return chars == 'read', 'Read'
 
 
 def is_kw_end(chars):
-    lexeme = 'End'
-    return chars == lexeme, lexeme
+    return chars == 'end', 'End'
 
 
 def is_kw_goto(chars):
-    lexeme = 'Goto'
-    return chars == lexeme, lexeme
+    return chars == 'goto', 'Goto'
 
 
 def is_kw_while(chars):
-    lexeme = 'While'
-    return chars == lexeme, lexeme
+    return chars == 'while', 'While'
 
 
 def is_kw_loop(chars):
-    lexeme = 'Loop'
-    return chars == lexeme, lexeme
+    return chars == 'loop', 'Loop'
 
 
 def is_kw_do(chars):
-    lexeme = 'Do'
-    return chars == lexeme, lexeme
+    return chars == 'do', 'Do'

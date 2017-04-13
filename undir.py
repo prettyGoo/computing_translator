@@ -67,20 +67,28 @@ def get_next_lexema():
         file.seek(base_position)
 
         """ read inside automata """
-        success, rest = Is_dec_int(get_scanner_params())
+        success, rests = Is_dec_int(get_scanner_params())
         if success:
-            base_position += rest['offset']
+            base_position += rests['offset']
             seek_new_position()
-            return rest['lexeme']
+            return rests['lexeme']
         file.seek(base_position)
 
-        success, rest = Is_id_or_kw(get_scanner_params())
+        success, rests = Is_id_or_kw(get_scanner_params())
         if success:
-            base_position += rest['offset']
+            base_position += rests['offset']
             seek_new_position()
-            return rest['lexeme']
+            return rests['lexeme']
         file.seek(base_position)
 
+        char = file.read(1).lower()
+        if is_comma(char):
+            return 'Comma'
+        if is_colon(char):
+            return 'Colon'
+        if is_semicolon(char):
+            return 'Semicolon'
+        file.seek(base_position)
 
 while True:
     if not lexema == 'EOF':

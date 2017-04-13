@@ -28,9 +28,9 @@ def Is_id_or_kw(scanner_params):
         chars = file.read(local_offset).lower()
         for _, function in lexems_automats.key_words.__dict__.items():
             if callable(function):
-                success, returned_lexeme = function(chars)
+                success, rest = function(chars)
                 if success:
-                    local_lexeme = returned_lexeme
+                    local_lexeme = rest
                     break
         return True, {'offset': local_offset, 'lexeme': local_lexeme}
     else:

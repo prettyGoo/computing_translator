@@ -22,7 +22,7 @@ def is_colon(ch):
 
 
 def is_semicolon(ch):
-    return ch == ':'
+    return ch == ';'
 
 
 def is_eof(ch):

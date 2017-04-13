@@ -2,7 +2,16 @@ __author__ = 'Nikita'
 
 import re
 
+
 # INTEGERS
+def is_digit(char):
+    a = '0' <= char <= '9'
+    return '0' <= char <= '9'
+
+
+def is_hex_digit(char):
+    return 'a' <= char <= 'f'
+
 
 def is_bin_int(chars):
     chars = chars.lower()

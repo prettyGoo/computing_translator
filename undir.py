@@ -1,12 +1,13 @@
 import sys
 import re
 
-from lexems_automats.key_words import *
-import lexems_automats.key_words
+from lexems_automats.indetificators import Is_id_or_kw, is_letter
+
 from lexems_automats.numbers import is_digit, is_hex_digit
 from lexems_automats.sintaksis import is_space, is_new_line, is_eof
 
 from lexems_printer import print_lexeme
+
 
 try:
     file = open('code.txt', 'r')
@@ -20,45 +21,13 @@ base_position = 0
 offset = 1
 
 
-def is_letter(char):
-    return 'a' <= char <= 'z'
-
-
-def is_id_or_kw():
+def get_scanner_params():
     global lexema
+    global row
     global base_position
     global offset
 
-    local_lexeme = ''
-    local_offset = 0
-
-    char = file.read(1)
-    local_offset += 1
-    if is_letter(char):
-        while True:
-            char = file.read(1).lower()
-            if is_digit(char) or is_letter(char):
-                local_offset += 1
-                continue
-            else:
-                local_lexeme = 'Id'
-                break
-
-        # checks if it is really Id or KeyWord
-        file.seek(base_position)
-        chars = file.read(local_offset).lower()
-        for _, function in lexems_automats.key_words.__dict__.items():
-            if callable(function):
-                success, returned_lexeme = function(chars)
-                if success:
-                    local_lexeme = returned_lexeme
-                    break
-        offset = local_offset
-        lexema = local_lexeme
-        return True
-    else:
-        file.seek(base_position)
-        return False
+    return file, lexema, row, base_position, offset
 
 
 def is_dec_int():
@@ -150,11 +119,12 @@ def get_next_lexema():
             return lexema
         file.seek(base_position)
 
-        if is_id_or_kw():
-            base_position += offset
+        success, rest = Is_id_or_kw(get_scanner_params())
+        if success:
+            base_position += rest['offset']
             file.seek(base_position)
             offset = 1
-            return lexema
+            return rest['lexeme']
         file.seek(base_position)
 
 

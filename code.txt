@@ -1,2 +1,2 @@
 write10 read 1
-read 2
+read 2 abc

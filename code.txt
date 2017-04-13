@@ -1,2 +1,2 @@
-write write
-read
+write 111 write read 123
+read read read 101

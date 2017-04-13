@@ -29,13 +29,15 @@ def is_dec_int():
     global base_position
     global offset
 
+    new_offset = 1
     char = file.read(1)
-    offset += 1
-    while is_digit(char):
-        char = file.read(1)
-        offset += 1
-    if not is_letter(char):
-        return True
+    if is_digit(char):
+        while is_digit(char):
+            char = file.read(1)
+            new_offset += 1
+        if not is_letter(char):
+            offset = new_offset - 1 # -1 because last none-letter char has been read too
+            return True
     else:
         return False
 
@@ -43,10 +45,14 @@ def is_dec_int():
 def print_lexema(lexema):
     if lexema == 'Write':
         print('%s\tWRITE' % row)
+    elif lexema == 'DecInt':
+        print('%s\tDECINT' % row)
     elif lexema == 'Read':
         print('%s\tREAD' % row)
-    elif lexema == 'NewLine':
+    elif lexema == 'Space':
         print('%s\tSPACE' % row)
+    elif lexema == 'NewLine':
+        print('%s\tNEWLINE' % row)
     elif lexema == 'EOF':
         print('%s\tEOF' % row)
 
@@ -97,25 +103,33 @@ def get_next_lexema():
             return lexema
 
         if is_space(char):
-            seek_new_position()
+            lexema = 'Space'
+            base_position = file.tell()
+            offset = 1
             break
 
         if is_new_line(char):
+            lexema = 'NewLine'
+            base_position = file.tell()
+            offset = 1
             row += 1
             seek_new_position()
             break
-        unset()
+        """ if no split char was detected it means that the char is valuable and file position must be unset """
+        file.seek(base_position)
 
-
+        """ read inside automata """
         if is_dec_int():
-            lexema = 'DECINT'
-            seek_new_position()
+            lexema = 'DecInt'
+            base_position += offset
+            file.seek(base_position)
             return lexema
-        unset()
+        file.seek(base_position)
 
         chars = file.read(offset).lower()
         offset += 1
 
+        # """ read inside automata """
         if is_kw_write(chars):
             lexema = 'Write'
             seek_new_position()

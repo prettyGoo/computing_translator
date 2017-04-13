@@ -11,4 +11,4 @@ def is_hex_digit(char):
 
 
 def is_letter(char):
-    return 'a' <= char <= 'z'
+    return 'a' <= char <= 'z' or char == '_'

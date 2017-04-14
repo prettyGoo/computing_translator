@@ -6,21 +6,20 @@ from lexems_automats.sintaksis import *
 
 from lexems_printer import print_lexeme
 
-
 try:
     file = open('code.txt', 'r')
 except FileNotFoundError:
     print('Aborted: the file you are looking for does not exist\n')
     sys.exit(0)
 
-lexema = 'NoLex'
+lexeme = 'NoLex'
 row = 1
 base_position = 0
 offset = 1
 
 
 def get_scanner_params():
-    return file, lexema, row, base_position, offset
+    return file, lexeme, row, base_position, offset
 
 
 def seek_new_position():
@@ -39,6 +38,15 @@ def tell_new_position():
     offset = 1
 
 
+def error_loop():
+    # read chars while \n is not found
+    while True:
+        char = file.read(1)
+        if is_new_line(char):
+            tell_new_position()
+            break
+
+
 def get_next_lexema():
 
     global base_position
@@ -49,20 +57,20 @@ def get_next_lexema():
         char = file.read(1).lower()
 
         if is_eof(char):
-            return 'EOF'
+            return 'EOF', 'eof'
 
         if is_space(char):
             tell_new_position()
-            return 'Space'
+            return 'Space', 'space'
 
         if is_tab(char):
             tell_new_position()
-            return 'Tab'
+            return 'Tab', 'tab'
 
         if is_new_line(char):
             tell_new_position()
             row += 1
-            return 'NewLine'
+            return 'NewLine', 'newline'
         """ if no split char was detected it means that the char is valuable and file position must be unset """
         file.seek(base_position)
 
@@ -71,57 +79,75 @@ def get_next_lexema():
         if success:
             base_position += rests['offset']
             seek_new_position()
-            return rests['lexeme']
+            return rests['lexeme'], rests['value']
+        elif rests:
+            error_loop()
+            return rests['lexeme'], rests['value']
         file.seek(base_position)
 
         success, rests = Is_bin_int(get_scanner_params())
         if success:
             base_position += rests['offset']
             seek_new_position()
-            return rests['lexeme']
+            return rests['lexeme'], rests['value']
+        elif rests:
+            error_loop()
+            return rests['lexeme'], rests['value']
         file.seek(base_position)
 
         success, rests = Is_oct_int(get_scanner_params())
         if success:
             base_position += rests['offset']
             seek_new_position()
-            return rests['lexeme']
+            return rests['lexeme'], rests['value']
+        elif rests:
+            error_loop()
+            return rests['lexeme'], rests['value']
         file.seek(base_position)
 
         success, rests = Is_hex_int(get_scanner_params())
         if success:
             base_position += rests['offset']
             seek_new_position()
-            return rests['lexeme']
+            return rests['lexeme'], rests['value']
+        elif rests:
+            error_loop()
+            return rests['lexeme'], rests['value']
         file.seek(base_position)
 
         success, rests = Is_dec_int_or_label(get_scanner_params())
         if success:
             base_position += rests['offset']
             seek_new_position()
-            return rests['lexeme']
+            return rests['lexeme'], rests['value']
+        elif rests:
+            error_loop()
+            return rests['lexeme'], rests['value']
         file.seek(base_position)
 
         success, rests = Is_id_or_kw(get_scanner_params())
         if success:
             base_position += rests['offset']
             seek_new_position()
-            return rests['lexeme']
+            return rests['lexeme'], rests['value']
+        elif rests:
+            error_loop()
+            return rests['lexeme'], rests['value']
         file.seek(base_position)
 
         char = file.read(1).lower()
         if is_comma(char):
-            return 'Comma'
+            return 'Comma', ','
         if is_colon(char):
-            return 'Colon'
+            return 'Colon', ':'
         if is_semicolon(char):
-            return 'Semicolon'
+            return 'Semicolon', ';'
         file.seek(base_position)
 
 while True:
-    if not lexema == 'EOF':
-        lexema = get_next_lexema()
-        print_lexeme(row, lexema)
+    if not lexeme == 'EOF':
+        lexeme, value = get_next_lexema()
+        print_lexeme(row, lexeme, value)
     else:
         break
 

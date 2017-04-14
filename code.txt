@@ -1,2 +1,2 @@
-write_10 read .1
-do 2.7e-1 _abc; 10d
+.1e+6 < 2e1
+do

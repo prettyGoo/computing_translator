@@ -2,6 +2,7 @@ import sys
 
 from lexems_automats.indetificators import Is_id_or_kw
 from lexems_automats.numbers import Is_dec_int_or_label, Is_bin_int, Is_oct_int, Is_hex_int, Is_real
+from lexems_automats.math_operations import *
 from lexems_automats.sintaksis import *
 
 from lexems_printer import print_lexeme
@@ -40,9 +41,12 @@ def tell_new_position():
 
 def error_loop():
     # read chars while \n is not found
+    # then when \n has been found, seek one position back
+    global row
     while True:
         char = file.read(1)
         if is_new_line(char):
+            file.seek(file.tell()-1)
             tell_new_position()
             break
 
@@ -142,7 +146,27 @@ def get_next_lexema():
             return 'Colon', ':'
         if is_semicolon(char):
             return 'Semicolon', ';'
+
+        # TODO: add 'mode' support
+        if is_add(char):
+            return 'Add', '+'
+        if is_min(char):
+            return 'Min', '-'
+        if is_mul(char):
+            return 'Mul', '*'
+        if is_div(char):
+            return 'Div', '/'
+
+        # TODO: add 'le' and 'ge' support
+        if is_eq(char):
+            return 'Eq', '='
+        if is_ne(char):
+            return 'Ne', '-'
+        if is_lt(char):
+            return 'Lt', '<'
+
         file.seek(base_position)
+
 
 while True:
     if not lexeme == 'EOF':

@@ -5,7 +5,7 @@ import re
 from lexems_automats.base import is_digit, is_bin_digit, is_oct_digit, is_hex_digit
 from lexems_automats.base import is_letter
 
-from lexems_automats.sintaksis import is_split, is_colon
+from lexems_automats.sintaksis import is_split, is_new_line, is_comma, is_colon, is_semicolon
 
 from value_detector import get_detected_value
 
@@ -32,7 +32,7 @@ def Is_bin_int(scaner_params):
         if not (is_letter(char) and is_digit(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
-            return False, {'lexeme': 'Error', 'error': "Bin integer's form is wrong", 'value': value}
+            return False, {'lexeme': 'Error', 'error': "Bin integer's form is wrong", 'value': value + char}
     else:
         return False, None
 
@@ -59,7 +59,7 @@ def Is_oct_int(scanner_params):
         if not (is_letter(char) and is_digit(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
-            return False, {'lexeme': 'Error', 'error': "OctInt integer's form is wrong",'value': value}
+            return False, {'lexeme': 'Error', 'error': "OctInt integer's form is wrong",'value': value + char}
     else:
         return False, None
 
@@ -86,7 +86,7 @@ def Is_hex_int(scanner_params):
         if not (is_letter(char) and is_digit(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
-            return False, {'lexeme': 'Error', 'error': "HexInt integer's form is wrong", 'value': value}
+            return False, {'lexeme': 'Error', 'error': "HexInt integer's form is wrong", 'value': value + char}
     else:
         return False, None
 
@@ -98,12 +98,12 @@ def Is_dec_int_or_label(scanner_params):
     char = file.read(1)
     local_offset = 1
     if is_digit(char):
+        local_lexeme = 'Int'
         while True:
             char = file.read(1)
             if not is_digit(char):
                 if char == 'd':  # it is still dec integer
                     local_offset += 1
-                    local_lexeme = 'Int'
                 elif is_colon(char):  # it is a label
                     local_offset += 1
                     local_lexeme = 'Label'
@@ -111,15 +111,14 @@ def Is_dec_int_or_label(scanner_params):
             else:
                 local_offset += 1
 
-        char = file.read(1)
+        afterchar = file.read(1) if not is_new_line(char) else ''
         value = get_detected_value(file, base_position, local_offset)
 
-        if local_lexeme == 'Int' and not (is_letter(char) or is_digit(char)):
-            return True, {'lexeme': local_lexeme, 'offset': local_offset, 'value': value}
-        elif local_lexeme == 'Label' and is_split(char):
-            return True, {'lexeme': local_lexeme, 'offset': local_offset, 'value': value}
+        if local_lexeme == 'Int' and not (is_letter(afterchar) or is_digit(afterchar)) \
+           or local_lexeme == 'Label' and is_split(afterchar):
+                return True, {'lexeme': local_lexeme, 'offset': local_offset, 'value': value}
         else:
-            return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value}
+            return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char}
     else:
         return False, None
 
@@ -137,16 +136,13 @@ def Is_real(scanner_params):
     if is_digit(first_char) or first_char == '.':
         while True:
             char = file.read(1)
-            if is_split(char):
+            if not (is_digit(char) or char == 'e' or char == '+' or char == '-' or char == '.'):
                 break
             local_offset += 1
 
-        file.seek(base_position)
-        value = file.read(local_offset)
-
+        value = get_detected_value(file, base_position, local_offset)
         if re.match(patter_three, value) or re.match(pattern_one, value) or re.match(pattern_two, value):
-            char = file.read(1)
-            if not (is_letter(char) and is_digit(char)):
+            if not (is_letter(char) or is_digit(char)):
                 return True, {'lexeme': 'Real', 'offset': local_offset, 'value': value}
             else:
                 return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': value + char}

@@ -5,7 +5,7 @@ import re
 from lexems_automats.base import is_digit, is_bin_digit, is_oct_digit, is_hex_digit
 from lexems_automats.base import is_letter
 
-from lexems_automats.sintaksis import is_split
+from lexems_automats.sintaksis import is_split, is_colon
 
 
 def Is_bin_int(scaner_params):
@@ -56,8 +56,9 @@ def Is_oct_int(scanner_params):
         return False, {}
 
 
-def Is_dec_int(scanner_params):
+def Is_dec_int_or_label(scanner_params):
     file, _, _, _, _ = scanner_params
+    local_lexeme = ''
 
     char = file.read(1)
     local_offset = 1
@@ -65,15 +66,23 @@ def Is_dec_int(scanner_params):
         while True:
             char = file.read(1)
             if not is_digit(char):
-                if char == 'd':
+                if char == 'd':  # it is still dec integer
                     local_offset += 1
+                    local_lexeme = 'DecInt'
+                elif is_colon(char):  # it is a label
+                    local_offset += 1
+                    local_lexeme = 'Label'
                 break
             else:
                 local_offset += 1
-        if not (is_letter(char) and is_digit(char)):
-            return True, {'offset': local_offset, 'lexeme': 'DecInt'}
+
+        char = file.read(1)
+        if local_lexeme == 'DecInt' and not (is_letter(char) or is_digit(char)):
+            return True, {'offset': local_offset, 'lexeme': local_lexeme}
+        elif local_lexeme == 'Label' and is_split(char):
+            return True, {'offset': local_offset, 'lexeme': local_lexeme}
         else:
-            return False, {'error': "Dec integer's form is wrong"}
+            return False, {'error': "Dec integer's or label's forms are wrong"}
     else:
         return False, {}
 
@@ -126,6 +135,6 @@ def Is_real(scanner_params):
         else:
             if re.match(pattern_one, chars) or re.match(pattern_two, chars):
                 return True, {"offset": local_offset, 'lexeme': 'Real'}
-        return False, {'error', "Real number's form is wrong"}
+        return False, {}
     else:
         return False, {}

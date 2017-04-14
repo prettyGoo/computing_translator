@@ -1,2 +1,2 @@
 write_10 read .1
-read 2.7e-1 abc; 10d
+do 2.7e-1 _abc; 10d

@@ -1,11 +1,15 @@
 __author__ = 'Nikita'
 
+import re
+
 from lexems_automats.base import is_digit, is_bin_digit, is_oct_digit, is_hex_digit
 from lexems_automats.base import is_letter
 
+from lexems_automats.sintaksis import is_split
 
-def Is_bin_int(scaner_maras):
-    file, _, _, _, _ = scaner_maras
+
+def Is_bin_int(scaner_params):
+    file, _, _, _, _ = scaner_params
 
     char = file.read(1)
     local_offset = 1
@@ -94,5 +98,34 @@ def Is_hex_int(scanner_params):
             return True, {'offset': local_offset, 'lexeme': 'HexInt'}
         else:
             return False, {'error': "HexInt integer's form is wrong"}
+    else:
+        return False, {}
+
+
+def Is_real(scanner_params):
+    file, _, _, base_position, _ = scanner_params
+
+    pattern_one = r'\d+e(\+|\-)?\d+$'
+    pattern_two = r'\d+\.\d*(e(\+|\-)?\d+)?$'
+    patter_three = r'\.\d+(e(\+|\-)?\d+)?$'
+
+    first_char = file.read(1)
+    local_offset = 1
+
+    if is_digit(first_char) or first_char == '.':
+        while True:
+            char = file.read(1)
+            if is_split(char):
+                break
+            local_offset += 1
+        file.seek(base_position)
+        chars = file.read(local_offset)
+        if first_char == '.':
+            if re.match(patter_three, chars):
+                return True, {"offset": local_offset, 'lexeme': 'Real'}
+        else:
+            if re.match(pattern_one, chars) or re.match(pattern_two, chars):
+                return True, {"offset": local_offset, 'lexeme': 'Real'}
+        return False, {'error', "Real number's form is wrong"}
     else:
         return False, {}

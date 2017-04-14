@@ -1,7 +1,7 @@
 import sys
 
 from lexems_automats.indetificators import Is_id_or_kw
-from lexems_automats.numbers import Is_dec_int, Is_bin_int, Is_oct_int, Is_hex_int
+from lexems_automats.numbers import Is_dec_int, Is_bin_int, Is_oct_int, Is_hex_int, Is_real
 from lexems_automats.sintaksis import *
 
 from lexems_printer import print_lexeme
@@ -67,6 +67,13 @@ def get_next_lexema():
         file.seek(base_position)
 
         """ read inside automata """
+        success, rests = Is_real(get_scanner_params())
+        if success:
+            base_position += rests['offset']
+            seek_new_position()
+            return rests['lexeme']
+        file.seek(base_position)
+
         success, rests = Is_bin_int(get_scanner_params())
         if success:
             base_position += rests['offset']

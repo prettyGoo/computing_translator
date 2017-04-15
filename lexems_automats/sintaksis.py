@@ -39,3 +39,7 @@ def is_starting_comment(char):
 
 def is_finishing_comment(char):
     return char == '}'
+
+
+def is_punctuation(ch):
+    return is_comma(ch) or is_colon(ch) or is_semicolon(ch) or is_starting_comment(ch)

@@ -5,7 +5,10 @@ import sys
 
 def print_lexeme(row, lexeme, value):
     if lexeme:
-        print('{}\tlex:{}\tval:{}'.format(row, lexeme, value))
+        if lexeme == 'Comment':
+            return
+        else:
+            print('{}\tlex:{}\tval:{}'.format(row, lexeme, value))
     else:
         print('ERROR: empty lexeme or None')
         sys.exit(0)

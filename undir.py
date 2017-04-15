@@ -8,7 +8,7 @@ from lexems_automats.sintaksis import *
 from lexems_printer import print_lexeme
 
 try:
-    file = open('code.txt', 'r')
+    file = open('code3.txt', 'r')
 except FileNotFoundError:
     print('Aborted: the file you are looking for does not exist\n')
     sys.exit(0)
@@ -51,6 +51,20 @@ def error_loop():
             break
 
 
+def comment_loop():
+    global row
+
+    while True:
+        char = file.read(1)
+        if is_finishing_comment(char):
+            return
+        if is_new_line(char):
+            row += 1
+        if is_eof(char):
+            print('Eof but comment has not been finished')
+            sys.exit(0)
+
+
 def get_next_lexema():
 
     global base_position
@@ -62,6 +76,11 @@ def get_next_lexema():
 
         if is_eof(char):
             return 'EOF', 'eof'
+
+        if is_starting_comment(char):
+            comment_loop()
+            tell_new_position()
+            return 'Comment', None
 
         if is_space(char):
             tell_new_position()
@@ -141,28 +160,38 @@ def get_next_lexema():
 
         char = file.read(1).lower()
         if is_comma(char):
+            tell_new_position()
             return 'Comma', ','
         if is_colon(char):
+            tell_new_position()
             return 'Colon', ':'
         if is_semicolon(char):
+            tell_new_position()
             return 'Semicolon', ';'
 
         # TODO: add 'mode' support
         if is_add(char):
+            tell_new_position()
             return 'Add', '+'
         if is_min(char):
+            tell_new_position()
             return 'Min', '-'
         if is_mul(char):
+            tell_new_position()
             return 'Mul', '*'
         if is_div(char):
+            tell_new_position()
             return 'Div', '/'
 
         # TODO: add 'le' and 'ge' support
         if is_eq(char):
+            tell_new_position()
             return 'Eq', '='
         if is_ne(char):
+            tell_new_position()
             return 'Ne', '-'
         if is_lt(char):
+            tell_new_position()
             return 'Lt', '<'
 
         file.seek(base_position)

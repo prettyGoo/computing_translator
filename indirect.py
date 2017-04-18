@@ -8,7 +8,7 @@ from lexems_automats.sintaksis import *
 from lexems_printer import print_lexeme
 
 try:
-    file = open('code4.txt', 'r')
+    file = open('code5.txt', 'r')
 except FileNotFoundError:
     print('Aborted: the file you are looking for does not exist\n')
     sys.exit(0)

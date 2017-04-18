@@ -63,3 +63,23 @@ def is_kw_loop(chars):
 
 def is_kw_do(chars):
     return chars == 'do', 'Do'
+
+
+def is_kw_var(chars):
+    return  chars == 'var', 'Var'
+
+
+def is_kw_proc(chars):
+    return chars == 'proc', 'Proc'
+
+
+def is_kw_tools(chars):
+    return chars == 'tools', 'Tools'
+
+
+def is_kw_call(chars):
+    return chars == 'call', 'Call'
+
+
+def is_kw_cast(chars):
+    return chars == 'cast', 'Cast'

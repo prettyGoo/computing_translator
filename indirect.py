@@ -1,4 +1,5 @@
 import sys
+import os
 
 from lexems_automats.indetificators import Is_id_or_kw
 from lexems_automats.numbers import Is_dec_int_or_label, Is_bin_int, Is_oct_int, Is_hex_int, Is_real
@@ -7,11 +8,21 @@ from lexems_automats.sintaksis import *
 
 from lexems_printer import print_lexeme
 
+if len(sys.argv) != 3:
+    print('Aborted: wrong number of arguments')
+    sys.exit(0)
+
+input_file = sys.argv[1]
+output_file = sys.argv[2]
+
+
 try:
-    file = open('code5.txt', 'r')
+    file = open('%s' % input_file, 'r')
 except FileNotFoundError:
     print('Aborted: the file you are looking for does not exist\n')
     sys.exit(0)
+
+output_file = open('%s' % output_file, 'w')
 
 lexeme = 'NoLex'
 row = 1
@@ -44,10 +55,10 @@ def check_automat_output(success, rests):
     if success:
         base_position += rests['offset']
         seek_new_position()
-        return rests['lexeme'], rests['value']
+        return rests['lexeme'], rests['value'], None
     elif rests:
         error_loop()
-        return rests['lexeme'], rests['value']
+        return rests['lexeme'], rests['value'], rests['error']
 
 
 def error_loop():
@@ -90,28 +101,28 @@ def get_next_lexema():
         char = file.read(1).lower()
 
         if is_eof(char):
-            return 'EOF', 'eof'
+            return 'EOF', 'eof', None
 
         if is_left_curly_bracket(char):
             comment_loop()
             tell_new_position()
-            return 'LCB', '{'
+            return 'LCB', '{', None
         if is_right_curly_bracket(char):
             tell_new_position()
-            return 'RCB', '}'
+            return 'RCB', '}', None
 
         if is_space(char):
             tell_new_position()
-            return 'Space', 'space'
+            return 'Space', 'space', None
 
         if is_tab(char):
             tell_new_position()
-            return 'Tab', 'tab'
+            return 'Tab', 'tab', None
 
         if is_new_line(char):
             tell_new_position()
             row += 1
-            return 'NewLine', 'newline'
+            return 'NewLine', 'newline', None
         """ if no split char was detected it means that the char is valuable and file position must be unset """
         file.seek(base_position)
 
@@ -155,39 +166,39 @@ def get_next_lexema():
         char = file.read(1).lower()
         if is_comma(char):
             tell_new_position()
-            return 'Comma', ','
+            return 'Comma', ',', None
         if is_colon(char):
             tell_new_position()
-            return 'Colon', ':'
+            return 'Colon', ':', None
         if is_semicolon(char):
             tell_new_position()
-            return 'Semicolon', ';'
+            return 'Semicolon', ';', None
 
         if is_left_round_bracket(char):
             tell_new_position()
-            return 'LRB', '('
+            return 'LRB', '(', None
         if is_right_round_bracket(char):
             tell_new_position()
-            return 'RRB', ')'
+            return 'RRB', ')', None
         if is_left_square_bracket(char):
             tell_new_position()
-            return 'LSB', '['
+            return 'LSB', '[', None
         if is_right_suqare_bracket(char):
             tell_new_position()
-            return 'RSB', ']'
+            return 'RSB', ']', None
 
         if is_add(char):
             tell_new_position()
-            return 'Add', '+'
+            return 'Add', '+', None
         if is_min(char):
             tell_new_position()
-            return 'Min', '-'
+            return 'Min', '-', None
         if is_mul(char):
             tell_new_position()
-            return 'Mul', '*'
+            return 'Mul', '*', None
         if is_div(char):
             tell_new_position()
-            return 'Div', '/'
+            return 'Div', '/', None
 
         chars = char + file.read(2)
 
@@ -216,21 +227,21 @@ def get_next_lexema():
         if is_eq(chars):
             base_position += 1
             seek_new_position()
-            return 'EQ', '='
+            return 'EQ', '=', None
         if is_lt(chars):
             base_position += 1
             seek_new_position()
-            return 'LT', '<'
+            return 'LT', '<', None
         if is_gt(chars):
             base_position += 1
             seek_new_position()
-            return 'GT', '>'
+            return 'GT', '>', None
 
 
 while True:
     if not lexeme == 'EOF':
-        lexeme, value = get_next_lexema()
-        print_lexeme(row, lexeme, value)
+        lexeme, value, error_message = get_next_lexema()
+        print_lexeme(output_file, row, lexeme, value, error_message)
     else:
         break
 

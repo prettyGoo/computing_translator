@@ -2,25 +2,38 @@ __author__ = 'Nikita'
 
 import sys
 
+error_counter = 0
 
-def print_lexeme(row, lexeme, value):
+
+def print_lexeme(output_file, row, lexeme, value, error_message):
+    global error_counter
+
     if lexeme:
         if lexeme == 'Real':
-            print('{}\tlex:{}\treal:{}\tval:{}'.format(row, lexeme, value, float(value)))
+            output_file.write('{}\tlex:{}\treal:{}\tval:{}\n'.format(row, lexeme, value, float(value)))
         elif lexeme == 'Int':
-            digit_base = value[-1]
-            if digit_base == 'b':
+            if value.endswith('b'):
                 digit_base = 2
-            elif digit_base == 'c':
+            elif value.endswith('c'):
                 digit_base = 8
-            elif digit_base == 'd':
-                digit_base = 10
-            elif digit_base == 'h':
+            elif value.endswith('h'):
                 digit_base = 16
-            number = value[:len(value)-1]
-            print('{}\tlex:{}\tint:{}\tval:{}'.format(row, lexeme, value, int(number, digit_base)))
+            else:
+                digit_base = 10
+            if digit_base != 10 or (digit_base == 10 and value.endswith('d')):
+                value = value[:len(value)-1]
+
+            output_file.write('{}\tlex:{}\tint:{}\tval:{}\n'.format(row, lexeme, value, int(value, digit_base)))
+        elif lexeme == 'Error':
+            output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
+            print(error_message)
+            error_counter += 1
+        elif lexeme == 'EOF':
+            output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
+            if error_counter == 0:
+                print('OK')
         else:
-            print('{}\tlex:{}\tval:{}'.format(row, lexeme, value))
+            output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
     else:
         print('ERROR: empty lexeme or None')
         sys.exit(0)

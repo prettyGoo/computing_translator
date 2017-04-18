@@ -1,0 +1,10 @@
+1	lex:Do	val:do
+1	lex:Comma	val:,
+1	lex:Real	real:.1	val:0.1
+1	lex:Id	val:e
+1	lex:Add	val:+
+1	lex:Int	int:6	val:6
+1	lex:error	val:<2e
+2	lex:NewLine	val:newline
+2	lex:Do	val:do
+2	lex:EOF	val:eof

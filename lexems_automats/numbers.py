@@ -147,7 +147,7 @@ def Is_real(scanner_params):
         for i in range(loop_offset):  # additional check since it may be correct 11e+1 or 11e+1+1 which is three lexemes
             file.seek(base_position)
             chars = file.read(local_offset)
-            if re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars) and not once_passed:
+            if (re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and not once_passed and not is_new_line(list(chars)[-1]):
                 once_passed = True
             if not(re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and once_passed:
                 if not is_letter(char):

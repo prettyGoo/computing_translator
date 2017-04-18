@@ -17,10 +17,6 @@ def is_div(char):
     return char == '/'
 
 
-def is_mod(char):
-    return char == 'mod'
-
-
 def is_eq(char):
     return char == '='
 

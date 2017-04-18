@@ -9,9 +9,16 @@ def is_kw_read(chars):
     return chars == 'read', 'Read'
 
 
+def is_kw_beg(chars):
+    return chars == 'begin', 'Begin'
+
+
 def is_kw_end(chars):
     return chars == 'end', 'End'
 
+
+def is_kw_mod(chars):
+    return chars == 'mod', 'Mod'
 
 def is_kw_goto(chars):
     return chars == 'goto', 'Goto'

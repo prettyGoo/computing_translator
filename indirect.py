@@ -39,6 +39,17 @@ def tell_new_position():
     offset = 1
 
 
+def check_automat_output(success, rests):
+    global base_position
+    if success:
+        base_position += rests['offset']
+        seek_new_position()
+        return rests['lexeme'], rests['value']
+    elif rests:
+        error_loop()
+        return rests['lexeme'], rests['value']
+
+
 def error_loop():
     # read chars while \n is not found
     # then when \n has been found, seek one position back
@@ -98,64 +109,40 @@ def get_next_lexema():
         file.seek(base_position)
 
         """ read inside automata """
-        success, rests = Is_real(get_scanner_params())
-        if success:
-            base_position += rests['offset']
-            seek_new_position()
-            return rests['lexeme'], rests['value']
-        elif rests:
-            error_loop()
-            return rests['lexeme'], rests['value']
+        status, rests = Is_real(get_scanner_params())
+        result = check_automat_output(status, rests)
+        if result:
+            return result
         file.seek(base_position)
 
-        success, rests = Is_bin_int(get_scanner_params())
-        if success:
-            base_position += rests['offset']
-            seek_new_position()
-            return rests['lexeme'], rests['value']
-        elif rests:
-            error_loop()
-            return rests['lexeme'], rests['value']
+        status, rests = Is_bin_int(get_scanner_params())
+        result = check_automat_output(status, rests)
+        if result:
+            return result
         file.seek(base_position)
 
-        success, rests = Is_oct_int(get_scanner_params())
-        if success:
-            base_position += rests['offset']
-            seek_new_position()
-            return rests['lexeme'], rests['value']
-        elif rests:
-            error_loop()
-            return rests['lexeme'], rests['value']
+        status, rests = Is_oct_int(get_scanner_params())
+        result = check_automat_output(status, rests)
+        if result:
+            return result
         file.seek(base_position)
 
-        success, rests = Is_hex_int(get_scanner_params())
-        if success:
-            base_position += rests['offset']
-            seek_new_position()
-            return rests['lexeme'], rests['value']
-        elif rests:
-            error_loop()
-            return rests['lexeme'], rests['value']
+        status, rests = Is_hex_int(get_scanner_params())
+        result = check_automat_output(status, rests)
+        if result:
+            return result
         file.seek(base_position)
 
-        success, rests = Is_dec_int_or_label(get_scanner_params())
-        if success:
-            base_position += rests['offset']
-            seek_new_position()
-            return rests['lexeme'], rests['value']
-        elif rests:
-            error_loop()
-            return rests['lexeme'], rests['value']
+        status, rests = Is_dec_int_or_label(get_scanner_params())
+        result = check_automat_output(status, rests)
+        if result:
+            return result
         file.seek(base_position)
 
-        success, rests = Is_id_or_kw(get_scanner_params())
-        if success:
-            base_position += rests['offset']
-            seek_new_position()
-            return rests['lexeme'], rests['value']
-        elif rests:
-            error_loop()
-            return rests['lexeme'], rests['value']
+        status, rests = Is_id_or_kw(get_scanner_params())
+        result = check_automat_output(status, rests)
+        if result:
+            return result
         file.seek(base_position)
 
         char = file.read(1).lower()
@@ -169,7 +156,6 @@ def get_next_lexema():
             tell_new_position()
             return 'Semicolon', ';'
 
-        # TODO: add 'mode' support
         if is_add(char):
             tell_new_position()
             return 'Add', '+'

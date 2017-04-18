@@ -8,7 +8,7 @@ from lexems_automats.sintaksis import *
 from lexems_printer import print_lexeme
 
 try:
-    file = open('code3.txt', 'r')
+    file = open('code4.txt', 'r')
 except FileNotFoundError:
     print('Aborted: the file you are looking for does not exist\n')
     sys.exit(0)
@@ -186,16 +186,36 @@ def get_next_lexema():
             return 'Div', '/'
 
         # TODO: add 'le' and 'ge' support
-        if is_eq(char):
+        chars = char + file.read(2)
+        if is_let(chars):
             tell_new_position()
-            return 'Eq', '='
-        if is_ne(char):
+            return 'Let', ':='
+        if is_le(chars):
             tell_new_position()
-            return 'Ne', '-'
-        if is_lt(char):
+            return 'NE', '<>'
+        if is_le(chars):
             tell_new_position()
-            return 'Lt', '<'
+            return 'LE', '<='
+        if is_ge(chars):
+            tell_new_position()
+            return 'GE', '>='
 
+        if is_eq(char):
+            base_position += 1
+            seek_new_position()
+            return 'EQ', '='
+        if is_ne(char):
+            base_position += 1
+            seek_new_position()
+            return 'NE', '-'
+        if is_lt(char):
+            base_position += 1
+            seek_new_position()
+            return 'LT', '<'
+        if is_gt(char):
+            base_position += 1
+            seek_new_position()
+            return 'GT', '>'
         file.seek(base_position)
 
 

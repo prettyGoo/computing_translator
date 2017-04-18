@@ -4,7 +4,8 @@
 1	lex:Id	val:e
 1	lex:Add	val:+
 1	lex:Int	int:6	val:6
-1	lex:error	val:<2e
+1	lex:LT	val:<
+1	lex:Real	real:2e1	val:20.0
 2	lex:Do	val:do
 3	lex:Error	val:1a
 3	lex:EOF	val:eof

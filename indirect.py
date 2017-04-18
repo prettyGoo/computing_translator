@@ -67,7 +67,7 @@ def comment_loop():
 
     while True:
         char = file.read(1)
-        if is_finishing_comment(char):
+        if is_right_curly_bracket(char):
             return
         if is_new_line(char):
             row += 1
@@ -88,10 +88,13 @@ def get_next_lexema():
         if is_eof(char):
             return 'EOF', 'eof'
 
-        if is_starting_comment(char):
+        if is_left_curly_bracket(char):
             comment_loop()
             tell_new_position()
-            return 'Comment', None
+            return 'LCB', '{'
+        if is_right_curly_bracket(char):
+            tell_new_position()
+            return 'RCB', '}'
 
         if is_space(char):
             tell_new_position()
@@ -155,6 +158,19 @@ def get_next_lexema():
         if is_semicolon(char):
             tell_new_position()
             return 'Semicolon', ';'
+
+        if is_left_round_bracket(char):
+            tell_new_position()
+            return 'LRB', '('
+        if is_right_round_bracket(char):
+            tell_new_position()
+            return 'RRB', ')'
+        if is_left_square_bracket(char):
+            tell_new_position()
+            return 'LSB', '['
+        if is_right_suqare_bracket(char):
+            tell_new_position()
+            return 'RSB', ']'
 
         if is_add(char):
             tell_new_position()

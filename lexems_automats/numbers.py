@@ -149,7 +149,8 @@ def Is_real(scanner_params):
             chars = file.read(local_offset)
             if (re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and not once_passed and not is_new_line(list(chars)[-1]):
                 once_passed = True
-            if not(re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and once_passed:
+            if (not(re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and once_passed) \
+                    or (is_new_line(list(chars)[-1]) and once_passed):
                 if not is_letter(char):
                     return True, {'lexeme': 'Real', 'offset': local_offset-1, 'value': ''.join(chars.split())[:-1]}
                 else:

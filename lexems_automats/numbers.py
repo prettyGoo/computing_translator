@@ -152,7 +152,10 @@ def Is_real(scanner_params):
             if (not(re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and once_passed) \
                     or (is_new_line(list(chars)[-1]) and once_passed):
                 if not is_letter(char):
-                    return True, {'lexeme': 'Real', 'offset': local_offset-1, 'value': ''.join(chars.split())[:-1]}
+                    if not is_split(char):
+                        return True, {'lexeme': 'Real', 'offset': local_offset-1, 'value': ''.join(chars.split())[:-1]}
+                    else:
+                       return True, {'lexeme': 'Real', 'offset': local_offset-1, 'value': chars[:len(chars)-1]}
                 else:
                     return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars + char}
             local_offset += 1

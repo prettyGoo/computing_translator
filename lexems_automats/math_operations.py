@@ -19,37 +19,49 @@ def is_div(char):
     return char == '/'
 
 
-def is_let(chars):
+def Is_let(chars):
     last_char = chars[-1]
-    return chars.replace(last_char, '') == ':=' and is_split(last_char)
+    if chars.replace(last_char, '') == ':=' and not is_single_math_sign(last_char):
+        return True, ':='
+    else:
+        return False, {'lexeme': 'error', 'error': 'wrong math combination', 'value': chars}
 
 
-def is_not_eq(chars):
+def Is_ne(chars):
     last_char = chars[-1]
-    return chars.replace(last_char, '') == '<>' and is_split(last_char)
+    if chars.replace(last_char, '') == '<>' and not is_single_math_sign(last_char):
+        return True, '<>'
+    else:
+        return False, {'lexeme': 'error', 'error': 'wrong math combination', 'value': chars}
 
 
-def is_le(chars):
+def Is_le(chars):
     last_char = chars[-1]
-    return chars.replace(last_char, '') == '<=' and is_split(last_char)
+    if chars.replace(last_char, '') == '<=' and not is_single_math_sign(last_char):
+        return True, '<='
+    else:
+        return False, {'lexeme': 'error', 'error': 'wrong math combination', 'value': chars}
 
 
-def is_ge(chars):
+def Is_ge(chars):
     last_char = chars[-1]
-    return chars.replace(last_char, '') == '>=' and is_split(last_char)
+    if chars.replace(last_char, '') == '>=' and not is_single_math_sign(last_char):
+        return True, '>='
+    else:
+        return False, {'lexeme': 'error', 'error': 'wrong math combination', 'value': chars}
 
 
-def is_eq(char):
-    return char == '='
+def is_eq(chars):
+    return chars == '=' and not is_single_math_sign(chars[-1])
 
 
-def is_ne(char):
-    return char == '<>'
+def is_lt(chars):
+    return chars == '<' and not is_single_math_sign(chars[-1])
 
 
-def is_lt(char):
-    return char == '<'
+def is_gt(chars):
+    return chars == '>' and not is_single_math_sign(chars[-1])
 
 
-def is_gt(char):
-    return char == '>'
+def is_single_math_sign(char):
+    return char in '<>=+-/*'

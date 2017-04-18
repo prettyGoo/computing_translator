@@ -60,6 +60,10 @@ def error_loop():
             file.seek(file.tell()-1)
             tell_new_position()
             break
+        if is_eof(char):
+            file.seek(file.tell())
+            tell_new_position()
+            break
 
 
 def comment_loop():
@@ -185,38 +189,42 @@ def get_next_lexema():
             tell_new_position()
             return 'Div', '/'
 
-        # TODO: add 'le' and 'ge' support
         chars = char + file.read(2)
-        if is_let(chars):
-            tell_new_position()
-            return 'Let', ':='
-        if is_le(chars):
-            tell_new_position()
-            return 'NE', '<>'
-        if is_le(chars):
-            tell_new_position()
-            return 'LE', '<='
-        if is_ge(chars):
-            tell_new_position()
-            return 'GE', '>='
 
-        if is_eq(char):
+        status, rests = Is_let(chars)
+        result = check_automat_output(status, rests)
+        if result:
+            return result
+
+        status, rests = Is_ne(chars)
+        result = check_automat_output(status, rests)
+        if result:
+            return result
+
+        status, rests = Is_le(chars)
+        result = check_automat_output(status, rests)
+        if result:
+            return result
+
+        status, rests = Is_ge(chars)
+        result = check_automat_output(status, rests)
+        if result:
+            return result
+
+
+        chars = chars[:len(chars)-1]
+        if is_eq(chars):
             base_position += 1
             seek_new_position()
             return 'EQ', '='
-        if is_ne(char):
-            base_position += 1
-            seek_new_position()
-            return 'NE', '-'
-        if is_lt(char):
+        if is_lt(chars):
             base_position += 1
             seek_new_position()
             return 'LT', '<'
-        if is_gt(char):
+        if is_gt(chars):
             base_position += 1
             seek_new_position()
             return 'GT', '>'
-        file.seek(base_position)
 
 
 while True:

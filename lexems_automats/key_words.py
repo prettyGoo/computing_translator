@@ -20,6 +20,35 @@ def is_kw_end(chars):
 def is_kw_mod(chars):
     return chars == 'mod', 'Mod'
 
+
+def is_kw_if(chars):
+    return chars == 'if', 'If'
+
+
+def is_kw_case(chars):
+    return chars == 'case', 'Case'
+
+
+def is_kw_then(chars):
+    return chars == 'then', 'Then'
+
+
+def is_kw_else(chars):
+    return chars == 'else', 'Else'
+
+
+def is_kw_of(chars):
+    return chars == 'of', 'Of'
+
+
+def is_kw_or(chars):
+    return chars == 'or', 'Or'
+
+
+def is_kw_break(chars):
+    return chars == 'break', 'Break'
+
+
 def is_kw_goto(chars):
     return chars == 'goto', 'Goto'
 

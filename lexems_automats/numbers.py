@@ -107,6 +107,7 @@ def Is_dec_int_or_label(scanner_params):
                 elif is_colon(char):  # it is a label
                     local_offset += 1
                     local_lexeme = 'Label'
+                file.seek(base_position+local_offset)
                 break
             else:
                 local_offset += 1
@@ -142,7 +143,7 @@ def Is_real(scanner_params):
 
         local_offset, loop_offset = 1, local_offset
         once_passed = False
-        # since 11e+11 will fire 11e+1, additional check since it may be correct 11e+1 or 11e+1+1 which is three lexemes
+        # since 11e+11 will fire 11e+1, additional check:; it may be correct 11e+1 or 11e+1+1 which is three lexemes
         for i in range(loop_offset):  # additional check since it may be correct 11e+1 or 11e+1+1 which is three lexemes
             file.seek(base_position)
             chars = file.read(local_offset)

@@ -13,7 +13,7 @@ def Is_id_or_kw(scanner_params):
     local_lexeme = ''
     local_offset = 0
 
-    char = file.read(1)
+    char = file.read(1).lower()
     local_offset += 1
     if is_letter(char):
         while True:

@@ -13,7 +13,7 @@ from value_detector import get_detected_value
 def Is_bin_int(scaner_params):
     file, _, _, base_position, _ = scaner_params
 
-    char = file.read(1)
+    char = file.read(1).lower()
     local_offset = 1
     if is_bin_digit(char):
         while True:
@@ -26,7 +26,7 @@ def Is_bin_int(scaner_params):
                     return False, None
             local_offset += 1
 
-        char = file.read(1)
+        char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
         if not (is_letter(char) and is_digit(char)):
@@ -53,7 +53,7 @@ def Is_oct_int(scanner_params):
                     return False, None
             local_offset += 1
 
-        char = file.read(1)
+        char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
         if not (is_letter(char) and is_digit(char)):
@@ -80,7 +80,7 @@ def Is_hex_int(scanner_params):
                     return False, None
             local_offset += 1
 
-        char = file.read(1)
+        char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
         if not (is_letter(char) and is_digit(char)):
@@ -95,12 +95,12 @@ def Is_dec_int_or_label(scanner_params):
     file, _, _, base_position, _ = scanner_params
     local_lexeme = ''
 
-    char = file.read(1)
+    char = file.read(1).lower()
     local_offset = 1
     if is_digit(char):
         local_lexeme = 'Int'
         while True:
-            char = file.read(1)
+            char = file.read(1).lower()
             if not is_digit(char):
                 if char == 'd':  # it is still dec integer
                     local_offset += 1
@@ -112,7 +112,7 @@ def Is_dec_int_or_label(scanner_params):
             else:
                 local_offset += 1
 
-        afterchar = file.read(1) if not is_new_line(char) else ''
+        afterchar = file.read(1).lower() if not is_new_line(char) else ''
         value = get_detected_value(file, base_position, local_offset)
 
         if local_lexeme == 'Int' and not (is_letter(afterchar) or is_digit(afterchar)) \
@@ -131,12 +131,12 @@ def Is_real(scanner_params):
     pattern_two = r'\d+\.\d*(e(\+|\-)?\d+)?$'
     patter_three = r'\.\d+(e(\+|\-)?\d+)?$'
 
-    char = file.read(1)
+    char = file.read(1).lower()
     local_offset = 1
     if is_digit(char) or char == '.':
         while True:  # we cannot do match firstly, since 11e+11 will fire 11e+1
             if is_digit(char) or char == '+' or char == '-' or char == 'e' or char == '.':
-                char = file.read(1)
+                char = file.read(1).lower()
                 local_offset += 1
             else:
                 break
@@ -146,7 +146,7 @@ def Is_real(scanner_params):
         # since 11e+11 will fire 11e+1, additional check:; it may be correct 11e+1 or 11e+1+1 which is three lexemes
         for i in range(loop_offset):  # additional check since it may be correct 11e+1 or 11e+1+1 which is three lexemes
             file.seek(base_position)
-            chars = file.read(local_offset)
+            chars = file.read(local_offset).lower()
             if (re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and not once_passed and not is_new_line(list(chars)[-1]):
                 once_passed = True
             if (not(re.match(patter_three, chars) or re.match(pattern_one, chars) or re.match(pattern_two, chars)) and once_passed) \

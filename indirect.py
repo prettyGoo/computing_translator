@@ -8,9 +8,6 @@ from lexems_automats.sintaksis import *
 
 from lexems_printer import print_lexeme
 
-if len(sys.argv) != 3:
-    print('Aborted: wrong number of arguments')
-    sys.exit(0)
 
 input_file = sys.argv[1]
 output_file = sys.argv[2]
@@ -28,6 +25,8 @@ lexeme = 'NoLex'
 row = 1
 base_position = 0
 offset = 1
+
+comment_mode = False
 
 
 def get_scanner_params():
@@ -66,7 +65,7 @@ def error_loop():
     # then when \n has been found, seek one position back
     global row
     while True:
-        char = file.read(1)
+        char = file.read(1).lower()
         if is_new_line(char):
             file.seek(file.tell()-1)
             tell_new_position()
@@ -81,7 +80,7 @@ def comment_loop():
     global row
 
     while True:
-        char = file.read(1)
+        char = file.read(1).lower()
         if is_right_curly_bracket(char):
             return
         if is_new_line(char):
@@ -96,6 +95,7 @@ def get_next_lexema():
     global base_position
     global offset
     global row
+    global comment_mode
 
     while True:  # while no stop char have been met
         char = file.read(1).lower()
@@ -105,9 +105,14 @@ def get_next_lexema():
 
         if is_left_curly_bracket(char):
             comment_loop()
+            comment_mode = True
             tell_new_position()
             return 'LCB', '{', None
+
         if is_right_curly_bracket(char):
+            if not comment_mode:
+                return 'Error', '}', 'No beginning of the comment has been found'
+
             tell_new_position()
             return 'RCB', '}', None
 
@@ -200,7 +205,7 @@ def get_next_lexema():
             tell_new_position()
             return 'Div', '/', None
 
-        chars = char + file.read(2)
+        chars = char + file.read(2).lower()
 
         status, rests = Is_let(chars)
         result = check_automat_output(status, rests)
@@ -237,6 +242,12 @@ def get_next_lexema():
             seek_new_position()
             return 'GT', '>', None
 
+        stop = file.tell()
+        file.seek(base_position)
+        start = file.tell()
+        result = check_automat_output(False, {'lexeme': 'Error', 'error': 'Unknown lexeme', 'offset': stop, 'value': file.read(stop-start)})
+        return result
+
 
 while True:
     if not lexeme == 'EOF':
@@ -244,5 +255,3 @@ while True:
         print_lexeme(output_file, row, lexeme, value, error_message)
     else:
         break
-
-print('====== Scanning has been finished ======')

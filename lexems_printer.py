@@ -23,7 +23,7 @@ def print_lexeme(output_file, row, lexeme, value, error_message):
             if digit_base != 10 or (digit_base == 10 and value.endswith('d')):
                 value = value[:len(value)-1]
 
-            output_file.write('{}\tlex:{}\tint:{}\tval:{}\n'.format(row, lexeme, value, int(value, digit_base)))
+            output_file.write('{}\tlex:{}\tint:{}\tval:{}\n'.format(row, lexeme, int(value, digit_base), value))
         elif lexeme == 'Error':
             output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
             print('{}:{}'.format(row, error_message))

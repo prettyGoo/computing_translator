@@ -1,0 +1,139 @@
+1	lex:Int	int:1	val:1
+1	lex:Int	int:2	val:2
+1	lex:Int	int:3	val:3
+1	lex:Int	int:4	val:4
+1	lex:Int	int:5	val:5
+1	lex:Int	int:6	val:6
+1	lex:Int	int:7	val:7
+1	lex:Int	int:8	val:8
+1	lex:Int	int:9	val:9
+1	lex:Int	int:0	val:0
+2	lex:Int	int:10	val:10
+2	lex:Int	int:20	val:20
+2	lex:Int	int:30	val:30
+2	lex:Int	int:40	val:40
+2	lex:Int	int:50	val:50
+2	lex:Int	int:60	val:60
+2	lex:Int	int:70	val:70
+2	lex:Int	int:80	val:80
+2	lex:Int	int:90	val:90
+2	lex:Int	int:100	val:100
+3	lex:Int	int:10	val:10
+3	lex:Int	int:20	val:20
+3	lex:Int	int:30	val:30
+3	lex:Int	int:40	val:40
+3	lex:Int	int:50	val:50
+3	lex:Int	int:60	val:60
+3	lex:Int	int:70	val:70
+3	lex:Int	int:80	val:80
+3	lex:Int	int:90	val:90
+3	lex:Int	int:100	val:100
+4	lex:Int	int:1	val:1
+4	lex:Int	int:1	val:1
+4	lex:Int	int:10	val:10
+4	lex:Int	int:10	val:10
+4	lex:Int	int:1000	val:1000
+4	lex:Int	int:1000	val:1000
+5	lex:Int	int:1	val:1
+5	lex:Int	int:2	val:10
+5	lex:Int	int:5	val:101
+6	lex:Int	int:8	val:10
+6	lex:Int	int:120	val:170
+6	lex:Int	int:56	val:70
+7	lex:Int	int:0	val:0
+7	lex:Int	int:1	val:1
+7	lex:Int	int:2	val:2
+7	lex:Int	int:3	val:3
+7	lex:Int	int:4	val:4
+7	lex:Int	int:5	val:5
+7	lex:Int	int:6	val:6
+7	lex:Int	int:7	val:7
+7	lex:Int	int:8	val:8
+7	lex:Int	int:9	val:9
+7	lex:Int	int:10	val:a
+7	lex:Int	int:11	val:b
+7	lex:Int	int:12	val:c
+7	lex:Int	int:13	val:d
+7	lex:Int	int:14	val:e
+7	lex:Int	int:15	val:f
+8	lex:Int	int:0	val:0
+8	lex:Int	int:1	val:1
+8	lex:Int	int:2	val:2
+8	lex:Int	int:3	val:3
+8	lex:Int	int:4	val:4
+8	lex:Int	int:5	val:5
+8	lex:Int	int:6	val:6
+8	lex:Int	int:7	val:7
+8	lex:Int	int:8	val:8
+8	lex:Int	int:9	val:9
+8	lex:Int	int:10	val:a
+8	lex:Int	int:11	val:b
+8	lex:Int	int:12	val:c
+8	lex:Int	int:13	val:d
+8	lex:Int	int:14	val:e
+8	lex:Int	int:15	val:f
+9	lex:Int	int:170	val:aa
+9	lex:Int	int:187	val:bb
+9	lex:Int	int:204	val:cc
+9	lex:Int	int:11259375	val:abcdef
+10	lex:Int	int:1	val:1
+11	lex:Int	int:11	val:11
+12	lex:Int	int:111	val:111
+13	lex:Add	val:+
+14	lex:Min	val:-
+15	lex:EQ	val:=
+16	lex:Div	val:/
+17	lex:Mod	val:mod
+18	lex:EQ	val:=
+19	lex:NE	val:<>
+20	lex:LT	val:<
+21	lex:GT	val:>
+22	lex:LE	val:<=
+23	lex:GE	val:>=
+24	lex:Colon	val::
+24	lex:EQ	val:=
+25	lex:Begin	val:begin
+26	lex:End	val:end
+27	lex:Semicolon	val:;
+28	lex:Add	val:+
+28	lex:Int	int:0	val:0
+28	lex:EQ	val:=
+28	lex:Div	val:/
+28	lex:Mod	val:mod
+28	lex:EQ	val:=
+28	lex:NE	val:<>
+28	lex:LT	val:<
+28	lex:GT	val:>
+28	lex:LE	val:<=
+28	lex:GE	val:>=
+28	lex:Colon	val::
+28	lex:EQ	val:=
+28	lex:Begin	val:begin
+28	lex:End	val:end
+28	lex:Semicolon	val:;
+29	lex:Int	int:1	val:1
+29	lex:NE	val:<>
+29	lex:Int	int:1	val:1
+30	lex:Int	int:1	val:1
+30	lex:LE	val:<=
+30	lex:Int	int:1	val:1
+31	lex:Int	int:1	val:1
+31	lex:GE	val:>=
+31	lex:Int	int:1	val:1
+32	lex:Int	int:1	val:1
+32	lex:Colon	val::
+32	lex:EQ	val:=
+32	lex:Int	int:1	val:1
+33	lex:Int	int:1	val:1
+33	lex:EQ	val:=
+33	lex:Int	int:1	val:1
+34	lex:Int	int:1	val:1
+34	lex:LT	val:<
+34	lex:Int	int:1	val:1
+35	lex:Int	int:1	val:1
+35	lex:GT	val:>
+35	lex:Int	int:1	val:1
+36	lex:Int	int:1	val:1
+36	lex:Mod	val:mod
+36	lex:Int	int:1	val:1
+36	lex:EOF	val:eof

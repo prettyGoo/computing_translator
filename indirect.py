@@ -227,7 +227,6 @@ def get_next_lexema():
         if result:
             return result
 
-
         chars = chars[:len(chars)-1]
         if is_eq(chars):
             base_position += 1

@@ -29,7 +29,7 @@ def Is_bin_int(scaner_params):
         char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
-        if not (is_letter(char) and is_digit(char)):
+        if not (is_letter(char) or is_digit(char) or is_colon(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
             return False, {'lexeme': 'Error', 'error': "Bin integer's form is wrong", 'value': value + char}
@@ -56,7 +56,7 @@ def Is_oct_int(scanner_params):
         char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
-        if not (is_letter(char) and is_digit(char)):
+        if not (is_letter(char) or is_digit(char) or is_colon(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
             return False, {'lexeme': 'Error', 'error': "OctInt integer's form is wrong",'value': value + char}
@@ -83,7 +83,7 @@ def Is_hex_int(scanner_params):
         char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
-        if not (is_letter(char) and is_digit(char)):
+        if not (is_letter(char) or is_digit(char) or is_colon(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
             return False, {'lexeme': 'Error', 'error': "HexInt integer's form is wrong", 'value': value + char}

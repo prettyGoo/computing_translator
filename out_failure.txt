@@ -1,1 +1,2 @@
+1	lex:Error	val:1.701411733e+39
 1	lex:EOF	val:eof

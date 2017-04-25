@@ -9,8 +9,6 @@ from lexems_automats.sintaksis import *
 
 from value_detector import get_detected_value
 
-max_float = 1.701411733e+38
-
 
 def Is_bin_int(scaner_params):
     file, _, _, base_position, _ = scaner_params

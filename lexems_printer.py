@@ -10,7 +10,13 @@ def print_lexeme(output_file, row, lexeme, value, error_message):
 
     if lexeme:
         if lexeme == 'Real':
-            output_file.write('{}\tlex:{}\treal:{}\tval:{}\n'.format(row, lexeme, value, float(value)))
+            max_float = 1.701411733e+38
+            if float(value) <= max_float:
+                output_file.write('{}\tlex:{}\treal:{}\tval:{}\n'.format(row, lexeme, value, float(value)))
+            else:
+                output_file.write('{}\tlex:{}\tval:{}\n'.format(row, 'Error', value))
+                print('{}:{}'.format(row, 'Max float overflow'))
+                error_counter += 1
         elif lexeme == 'Int':
             if value.endswith('b'):
                 digit_base = 2

@@ -143,7 +143,7 @@ def Is_real(scanner_params):
             local_offset -= 1
             value = get_detected_value(file, base_position, local_offset)
             if lexeme_is_formed:
-                char = file.read(1)
+                char = file.read(1).lower()
                 if not (is_letter(char) or char == '.'):
                     return True, {'lexeme': 'Real', 'offset': local_offset, 'value': value}
                 else:
@@ -155,7 +155,7 @@ def Is_real(scanner_params):
             local_offset += 1
             if is_digit(char):
                 while is_digit(char):
-                    char = file.read(1)
+                    char = file.read(1).lower()
                     local_offset += 1
 
             if char == 'e':
@@ -164,7 +164,7 @@ def Is_real(scanner_params):
                 local_offset -= 1
                 value = get_detected_value(file, base_position, local_offset)
                 if lexeme_is_formed:
-                    char = file.read(1)
+                    char = file.read(1).lower()
                     if not (is_letter(char) or char == '.'):
                         return True, {'lexeme': 'Real', 'offset': local_offset, 'value': value}
                     else:
@@ -174,19 +174,19 @@ def Is_real(scanner_params):
             else:
                 local_offset -= 1
                 file.seek(base_position)
-                chars = file.read(local_offset)
-                char = file.read(1)
+                chars = file.read(local_offset).lower()
+                char = file.read(1).lower()
                 if not (is_letter(char) or char == '.'):
                     return True, {'lexeme': 'Real', 'offset': local_offset, 'value': chars}
                 else:
                     return False, {'lexeme': 'Error', 'error': 'Real number form', 'value': chars+char}
 
     elif char == '.':
-        char = file.read(1)
+        char = file.read(1).lower()
         local_offset += 1
         if is_digit(char):
             while is_digit(char):
-                char = file.read(1)
+                char = file.read(1).lower()
                 local_offset += 1
 
             if char == 'e':
@@ -195,7 +195,7 @@ def Is_real(scanner_params):
                 local_offset -= 1
                 value = get_detected_value(file, base_position, local_offset)
                 if lexeme_is_formed:
-                    char = file.read(1)
+                    char = file.read(1).lower()
                     if not (is_letter(char) or char == '.'):
                         return True, {'lexeme': 'Real', 'offset': local_offset, 'value': value}
                     else:

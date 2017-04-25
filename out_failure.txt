@@ -1,10 +1,11 @@
 1	lex:Error	val:. .
 2	lex:Error	val:..1
 3	lex:Error	val:1e
-4	lex:Error	val:.e1
-5	lex:Real	real:11e11	val:1100000000000.0
-5	lex:Id	val:e11
-6	lex:Real	real:11.11	val:11.11
-6	lex:Real	real:.11	val:0.11
-7	lex:Error	val:1e
-7	lex:EOF	val:eof
+4	lex:Id	val:e1
+5	lex:Error	val:.e1
+6	lex:Real	real:11e11	val:1100000000000.0
+6	lex:Id	val:e11
+7	lex:Real	real:11.11	val:11.11
+7	lex:Real	real:.11	val:0.11
+8	lex:Error	val:1e
+8	lex:EOF	val:eof

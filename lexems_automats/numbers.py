@@ -162,3 +162,65 @@ def Is_real(scanner_params):
         return False, None
     else:
         return False, None
+
+
+def Is_new_real(scanner_params):
+    file, _, _, base_position, _ = scanner_params
+
+    must_meet = '.e'
+    can_meet = '.+-e'
+    cannot_meet = ''
+
+
+    pattern_one = r'\d+e(\+|\-)?\d+$'
+    pattern_two = r'\d+\.\d*(e(\+|\-)?\d+)?$'
+    patter_three = r'\.\d+(e(\+|\-)?\d+)?$'
+
+    char = file.read(1).lower()
+    local_offset = 1
+    if is_digit(char) or char == '.':
+        while True:  # we cannot do match firstly, since 11e+11 will fire 11e+1
+            if is_digit(char) or char == '+' or char == '-' or char == 'e' or char == '.':
+                char = file.read(1).lower()
+                local_offset += 1
+            else:
+                break
+
+        file.seek(base_position)
+        chars = file.read(local_offset)
+
+        for i, char in enumerate(chars):
+            if char in must_meet:
+                must_meet = ''
+
+            if char == '.':
+                if char in cannot_meet:
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars}
+                if not is_digit(char[i + 1]):
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars}
+                can_meet.replace(char, '')
+                cannot_meet += char
+
+            if char == 'e':
+                if char in cannot_meet:
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars}
+                if not ((char[i+1] == 'e' and is_digit(char[i+2])) and ((char[i+1] != 'e' and is_digit(char[i+1])) )):
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars}
+                can_meet.replace(char, '')
+                cannot_meet += char
+
+            if char == '+' or char == '-':
+                if i == 0:
+                    return False, None
+                if char in cannot_meet:
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars }
+                if char[i-1] != 'e':
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars}
+                if not is_digit(char[i+1]):
+                    return False, {'lexeme': 'Error', 'error': "Real number's form is wrong", 'value': chars}
+                can_meet.replace(char, '')
+                cannot_meet += char
+
+        return False, None
+
+    return False, None

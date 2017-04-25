@@ -1,11 +1,1 @@
-1	lex:Error	val:.. 
-2	lex:Error	val:.
-3	lex:Error	val:..1
-4	lex:Error	val:1...
-5	lex:Error	val:1e
-6	lex:Error	val:e1
-7	lex:Error	val:.e1
-8	lex:Error	val:11e11ee
-9	lex:Error	val:11.11..
-10	lex:Error	val:1e
-10	lex:EOF	val:eof
+1	lex:EOF	val:eof

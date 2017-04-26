@@ -1,3 +1,4 @@
+1	lex:Int	int:0	val:0
 1	lex:Int	int:1	val:1
 1	lex:Int	int:2	val:2
 1	lex:Int	int:3	val:3
@@ -7,81 +8,26 @@
 1	lex:Int	int:7	val:7
 1	lex:Int	int:8	val:8
 1	lex:Int	int:9	val:9
-1	lex:Int	int:0	val:0
-2	lex:Int	int:10	val:10
-2	lex:Int	int:20	val:20
-2	lex:Int	int:30	val:30
-2	lex:Int	int:40	val:40
-2	lex:Int	int:50	val:50
-2	lex:Int	int:60	val:60
-2	lex:Int	int:70	val:70
-2	lex:Int	int:80	val:80
-2	lex:Int	int:90	val:90
-2	lex:Int	int:100	val:100
-3	lex:Int	int:1	val:1
-3	lex:Int	int:1	val:1
-3	lex:Int	int:10	val:10
-3	lex:Int	int:10	val:10
-3	lex:Int	int:1000	val:1000
-3	lex:Int	int:1000	val:1000
-4	lex:Int	int:1	val:1
-5	lex:Int	int:11	val:11
-6	lex:Int	int:111	val:111
-7	lex:Add	val:+
-8	lex:Min	val:-
-9	lex:EQ	val:=
-10	lex:Div	val:/
-11	lex:Mod	val:mod
-12	lex:EQ	val:=
-13	lex:NE	val:<>
-14	lex:LT	val:<
-15	lex:GT	val:>
-16	lex:LE	val:<=
-17	lex:GE	val:>=
-18	lex:Colon	val::
-18	lex:EQ	val:=
-19	lex:Begin	val:begin
-20	lex:End	val:end
-21	lex:Semicolon	val:;
-22	lex:Add	val:+
-22	lex:Int	int:0	val:0
-22	lex:EQ	val:=
-22	lex:Div	val:/
-22	lex:Mod	val:mod
-22	lex:EQ	val:=
-22	lex:NE	val:<>
-22	lex:LT	val:<
-22	lex:GT	val:>
-22	lex:LE	val:<=
-22	lex:GE	val:>=
-22	lex:Colon	val::
-22	lex:EQ	val:=
-22	lex:Begin	val:begin
-22	lex:End	val:end
-22	lex:Semicolon	val:;
-23	lex:Int	int:1	val:1
-23	lex:NE	val:<>
-23	lex:Int	int:1	val:1
-24	lex:Int	int:1	val:1
-24	lex:LE	val:<=
-24	lex:Int	int:1	val:1
-25	lex:Int	int:1	val:1
-25	lex:GE	val:>=
-25	lex:Int	int:1	val:1
-26	lex:Int	int:1	val:1
-26	lex:Colon	val::
-26	lex:EQ	val:=
-26	lex:Int	int:1	val:1
-27	lex:Int	int:1	val:1
-27	lex:EQ	val:=
-27	lex:Int	int:1	val:1
-28	lex:Int	int:1	val:1
-28	lex:LT	val:<
-28	lex:Int	int:1	val:1
-29	lex:Int	int:1	val:1
-29	lex:GT	val:>
-29	lex:Int	int:1	val:1
-30	lex:Int	int:1	val:1
-30	lex:Mod	val:mod
-30	lex:Int	int:1	val:1
-30	lex:EOF	val:eof
+1	lex:Int	int:a	val:10
+1	lex:Int	int:b	val:11
+1	lex:Int	int:c	val:12
+1	lex:Int	int:d	val:13
+1	lex:Int	int:e	val:14
+1	lex:Int	int:f	val:15
+2	lex:Int	int:0	val:0
+2	lex:Int	int:1	val:1
+2	lex:Int	int:2	val:2
+2	lex:Int	int:3	val:3
+2	lex:Int	int:4	val:4
+2	lex:Int	int:5	val:5
+2	lex:Int	int:6	val:6
+2	lex:Int	int:7	val:7
+2	lex:Int	int:8	val:8
+2	lex:Int	int:9	val:9
+2	lex:Int	int:a	val:10
+2	lex:Int	int:b	val:11
+2	lex:Int	int:c	val:12
+2	lex:Int	int:d	val:13
+2	lex:Int	int:e	val:14
+2	lex:Int	int:f	val:15
+2	lex:EOF	val:eof

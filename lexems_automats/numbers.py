@@ -32,7 +32,10 @@ def Is_bin_int(scaner_params):
         if not (is_letter(char) or is_digit(char) or is_colon(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
-            return False, {'lexeme': 'Error', 'error': "Bin integer's form is wrong", 'value': value + char}
+            if is_hex_digit(char) or char == 'h':
+                return False, None
+            else:
+                return False, {'lexeme': 'Error', 'error': "Bin integer's form is wrong", 'value': value + char}
     else:
         return False, None
 
@@ -59,7 +62,10 @@ def Is_oct_int(scanner_params):
         if not (is_letter(char) or is_digit(char) or is_colon(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
-            return False, {'lexeme': 'Error', 'error': "OctInt integer's form is wrong",'value': value + char}
+            if is_hex_digit(char) or char == 'h':
+                return False, None
+            else:
+                return False, {'lexeme': 'Error', 'error': "OctInt integer's form is wrong",'value': value + char}
     else:
         return False, None
 
@@ -147,7 +153,11 @@ def Is_real(scanner_params):
                 else:
                     return False, {'lexeme': 'Error', 'error': 'Real number form', 'value': value+char}
             else:
-                return False, {'lexeme': 'Error', 'error': 'Real number form', 'value': value}
+                char = file.read(1).lower()
+                if is_hex_digit(char) or char == 'h':
+                    return False, None
+                else:
+                    return False, {'lexeme': 'Error', 'error': 'Real number form', 'value': value}
         elif char == '.':
             char = file.read(1).lower()
             local_offset += 1

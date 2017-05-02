@@ -1,3 +1,12 @@
+1bH
+0bH
+0ah
+0bh
+0ch
+0dh
+0eh
+0EH
+0fh
 1e1<2e1
 1e+1
 1e-1

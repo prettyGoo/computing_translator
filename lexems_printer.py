@@ -15,7 +15,7 @@ def print_lexeme(output_file, row, lexeme, value, error_message):
                 output_file.write('{}\tlex:{}\treal:{}\tval:{}\n'.format(row, lexeme, value, float(value)))
             else:
                 output_file.write('{}\tlex:{}\tval:{}\n'.format(row, 'Error', value))
-                print('{}:{}'.format(row, 'Max float overflow'))
+                print('Error:{}:{}'.format(row, 'Max float overflow'))
                 error_counter += 1
         elif lexeme == 'Int':
             if value.endswith('b'):
@@ -32,10 +32,10 @@ def print_lexeme(output_file, row, lexeme, value, error_message):
             output_file.write('{}\tlex:{}\tint:{}\tval:{}\n'.format(row, lexeme, int(value, digit_base), value))
         elif lexeme == 'Error':
             output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
-            print('{}:{}'.format(row, error_message))
+            print('Error:{}:{}'.format(row, error_message))
             error_counter += 1
         elif lexeme == 'EOF':
-            output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
+            #output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
             if error_counter == 0:
                 print('OK')
         elif lexeme == 'Space' or lexeme == 'Tab' or lexeme == 'NewLine':

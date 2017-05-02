@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import os
 
@@ -447,29 +446,42 @@ class Tree:
         self.tag = tag
         self.value = value
         self.nodes = []
-        self.atributes = []
+        self.attributes = []
 
 
 class Parser:
     def __init__(self):
         min_arguments = 4
         if len(sys.argv) < min_arguments:
-            print('Error:Args: The number of args is less than 3')
-            sys.exit(1)
+            print('Error:Params: The number of args is less than 3')
+            sys.exit(0)
 
-        file_name_tree = sys.argv[3]
+        output_file = sys.argv[2]
+        tree_file = sys.argv[3]
 
+        self.scanner = indirect
+        self.scanner.run()
 
-        self.scanner = Scanner()
-        self.lexemes = self.scanner.scanner()
-        if self.lexemes is False:
-            exit(1)
+        try:
+            file = open(output_file, 'r')
+        except FileNotFoundError:
+            print('Error:Params: The file you are looking for does not exist\n')
+            sys.exit(0)
+
+        self.lexemes = []
+        file_content = file.read()
+
+        if file_content:
+            self.lexemes = file_content.split('\n')
+        else:
+            exit(0)
+
         self.num_lexeme = 0
 
         try:
-            self.tree = open(file_name_tree, 'w')
+            self.tree = open(tree_file, 'w')
         except OSError:
-            print('Error:Args:Cannot write to given file')
+            print('Error:Params:Cannot write to given file')
             sys.exit()
 
         self.token = Token()
@@ -606,7 +618,7 @@ class Parser:
         if self.token.id not in (self.SpecialWords['int'], self.SpecialWords['real']):
             return False
         dfn_node = Tree(tag='dfn', num_str=self.token.num_str)
-        dfn_node.atributes.append(Tree(tag='type', value=self.token.id.lower(), num_str=self.token.num_str))
+        dfn_node.attributes.append(Tree(tag='type', value=self.token.id.lower(), num_str=self.token.num_str))
         brief_nodes = []
 
         expected_identifier = True
@@ -616,7 +628,7 @@ class Parser:
                 raise MyException(self.token.num_str, 'Expected Identifier')
 
             brief_node = Tree(tag='brief', num_str=self.token.num_str)
-            brief_node.atributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
+            brief_node.attributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
 
             self.get_next_lexeme()
             if self.token.id == self.SpecialSymbols['[']:
@@ -625,7 +637,7 @@ class Parser:
                     raise MyException(self.token.num_str, 'Expected integer')
                 if str(self.token.recval) == '0':
                     raise MyException(self.token.num_str, 'Invalid array size')
-                brief_node.atributes.append(Tree(tag='length', value=self.token.value, num_str=self.token.num_str))
+                brief_node.attributes.append(Tree(tag='length', value=self.token.value, num_str=self.token.num_str))
                 self.get_next_lexeme()
                 if self.token.id != self.SpecialSymbols[']']:
                     raise MyException(self.token.num_str, 'Expected "]"')
@@ -637,8 +649,8 @@ class Parser:
                     for i in brief_nodes:
                         dfn_node.nodes.append(i)
                 elif len(brief_nodes) == 1:
-                    for i in brief_node.atributes:
-                        dfn_node.atributes.append(i)
+                    for i in brief_node.attributes:
+                        dfn_node.attributes.append(i)
         return dfn_node
 
     def get_previous_lexeme(self, num_lexeme=-1):
@@ -660,7 +672,7 @@ class Parser:
                     raise MyException(label_num_str, 'Repeated label name')
                 self.labels.append(label_name)
                 label_node = Tree(tag='label', num_str=label_num_str)
-                label_node.atributes.append(Tree(tag='name', value=label_name, num_str=label_num_str))
+                label_node.attributes.append(Tree(tag='name', value=label_name, num_str=label_num_str))
                 self.get_next_lexeme()
             else:
                 self.get_previous_lexeme(checkpoint)
@@ -706,7 +718,7 @@ class Parser:
 
         if self.token.id != self.IdentifiersLexemes['int']:
             raise MyException(self.token.num_str, 'Expected label')
-        goto_node.atributes.append(Tree(tag='label', value=self.token.value, num_str=self.token.num_str))
+        goto_node.attributes.append(Tree(tag='label', value=self.token.value, num_str=self.token.num_str))
         self.get_next_lexeme()
 
         return goto_node
@@ -750,14 +762,14 @@ class Parser:
         if self.token.id != self.IdentifiersLexemes['id']:
             return False
         variable_node = Tree(tag='var', num_str=self.token.num_str)
-        variable_node.atributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
+        variable_node.attributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
         self.get_next_lexeme()
         if self.token.id == self.SpecialSymbols['[']:
             self.get_next_lexeme()
             index_node = self.is_index()
             if not index_node:
                 raise MyException(self.token.num_str, 'Expected index')
-            variable_node.atributes.append(index_node)
+            variable_node.attributes.append(index_node)
             self.get_next_lexeme()
             if self.token.id != self.SpecialSymbols[']']:
                 raise MyException(self.token.num_str, 'Expected "]"')
@@ -773,7 +785,7 @@ class Parser:
     def is_qualifier(self):
         if self.token.id in self.QualifierWords.values():
             qualifier_node = Tree(tag='qualifier', num_str=self.token.num_str)
-            qualifier_node.atributes.append(Tree(tag='kind', value=self.token.value, num_str=self.token.num_str))
+            qualifier_node.attributes.append(Tree(tag='kind', value=self.token.value, num_str=self.token.num_str))
             return qualifier_node
         return False
 
@@ -807,7 +819,7 @@ class Parser:
             expression_node = Tree(tag='op', num_str=self.token.num_str)
 
             kind_node = Tree(tag='kind', value=self.token.id, num_str=self.token.num_str)
-            expression_node.atributes.append(kind_node)
+            expression_node.attributes.append(kind_node)
             self.get_next_lexeme()
 
             operand_node = self.is_operand()
@@ -833,7 +845,7 @@ class Parser:
             if self.token.id != 'Min':
                 raise MyException(self.token.num_str, 'Expected Min')
             kind_node = Tree(tag='kind', value=self.token.id, num_str=self.token.num_str)
-            expression_node.atributes.append(kind_node)
+            expression_node.attributes.append(kind_node)
             self.get_next_lexeme()
 
             operand_node = self.is_operand()
@@ -896,7 +908,7 @@ class Parser:
     def is_number(self):
         if self.token.id in (self.IdentifiersLexemes['int'], self.IdentifiersLexemes['real']):
             number_node = Tree(tag=self.token.type, num_str=self.token.num_str)
-            number_node.atributes.append(Tree(tag='val', value=self.token.recval, num_str=self.token.num_str))
+            number_node.attributes.append(Tree(tag='val', value=self.token.recval, num_str=self.token.num_str))
             self.get_next_lexeme()
             return number_node
         return False
@@ -999,7 +1011,7 @@ class Parser:
 
         proc_tree = Tree(tag='proc', num_str=self.token.num_str)
         id_node = Tree(tag='var', num_str=self.token.num_str)
-        id_node.atributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
+        id_node.attributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
         proc_tree.nodes.append(id_node)
         self.get_next_lexeme()
 
@@ -1026,7 +1038,7 @@ class Parser:
             return False
         call_tree = Tree(tag='call', num_str=self.token.num_str)
         id_node = Tree(tag='var', num_str=self.token.num_str)
-        id_node.atributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
+        id_node.attributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.num_str))
         call_tree.nodes.append(id_node)
         self.get_next_lexeme()
         if self.token.id != self.SpecialSymbols['(']:

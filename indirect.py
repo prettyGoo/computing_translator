@@ -12,7 +12,6 @@ from lexems_printer import print_lexeme
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 
-
 try:
     file = open('%s' % input_file, 'r')
 except FileNotFoundError:
@@ -248,9 +247,14 @@ def get_next_lexema():
         return result
 
 
-while True:
-    if not lexeme == 'EOF':
-        lexeme, value, error_message = get_next_lexema()
-        print_lexeme(output_file, row, lexeme, value, error_message)
-    else:
-        break
+def run():
+    global lexeme
+
+    while True:
+        if not lexeme == 'EOF':
+            lexeme, value, error_message = get_next_lexema()
+            print_lexeme(output_file, row, lexeme, value, error_message)
+        else:
+            break
+
+    file.close()

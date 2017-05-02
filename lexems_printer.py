@@ -35,9 +35,7 @@ def print_lexeme(output_file, row, lexeme, value, error_message):
             print('Error:{}:{}'.format(row, error_message))
             error_counter += 1
         elif lexeme == 'EOF':
-            #output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
-            if error_counter == 0:
-                print('OK')
+            output_file.close()
         elif lexeme == 'Space' or lexeme == 'Tab' or lexeme == 'NewLine':
             return
         else:

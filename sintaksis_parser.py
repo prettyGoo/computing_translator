@@ -52,7 +52,7 @@ class Parser:
 
         if file_content:
             self.lexemes = []
-            self.lexemes = self.tokenize_lexems(file_content)
+            self.lexemes = self.tokenize_lexemes(file_content)
         else:
             exit(0)
 
@@ -112,7 +112,8 @@ class Parser:
             '!': 'Error'
         }
 
-    def tokenize_lexems(self, untokenized_lexemes):
+    @staticmethod
+    def tokenize_lexemes(untokenized_lexemes):
         tokenized_lexemes = []
 
         for lexeme in untokenized_lexemes.split('\n'):

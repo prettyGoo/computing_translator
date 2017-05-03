@@ -20,426 +20,6 @@ class Token:
         self.row = row
 
 
-class Scanner:
-    def __init__(self):
-        self.source, self.result = self.open_files()
-        self.token = Token()
-        self.char = ' '
-        self.num_str = 1
-        self.errors = 0
-        self.SpecialWords = {
-
-            '=': 'EQ', '<>': 'NE', 'lth': 'LT',
-            'gth': 'GT', 'leq': 'LE', 'geq': 'GE',
-            'add': 'Add', 'sub': 'Min', 'mul': 'Mul',
-            'div': 'Div', 'mod': 'Mod', 'mov': 'Let',
-            'tools': 'Tools',
-            'proc': 'Proc', 'if': 'If',
-            'var': 'Var', 'else': 'Else',
-            'then': 'Then', 'box': 'Beg',
-            'end': 'End', 'loop': 'Loop',
-                        # general special worlds
-            'int': 'TypeInt', 'real': 'TypeReal',
-            'skip': 'Skip', 'space': "Space", 'tab': 'Tab',
-            'goto': 'Goto',
-            'read': 'Read', 'write': 'Write',
-            'cast': 'Cast',
-            'break': 'Break',
-        }
-        self.SpecialSymbols = {
-            # individual spec symbols
-            # general special symbols
-            '': 'eof',
-            '(': 'LRB', ')': 'RRB', '[': 'LSB', ']': 'RSB',
-            '{': 'LCB', '}': 'RCB',
-            ':': 'Colon', ',': 'Comma',
-            ';': 'Semicolon',
-            '!': 'Error'
-        }
-        self.IdentifiersLexemes = {
-            'id': 'Id',
-            'label': 'Label',
-            'error': 'Error',
-            'int': 'Int', 'real': 'Real',
-            'comment': 'Comment'
-        }
-
-        self.CharsAlphabet = ("_", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-                              "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-                              "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q",
-                              "r", "s", "t", "u", "v", "w", "x", "y", "z")
-
-        self.CharsNumSystem = {
-            'b': ['0', '1'],
-            '0': ["0", "1", "2", "3", "4", "5", "6", "7"],
-            '10': ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-            'x': ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                  "A", "B", "C", "D", "E", "F", "a", "b", "c", "d", "e", "f"]
-        }
-
-    @staticmethod
-    def open_files():
-        try:
-            min_num_params = 3
-            if len(sys.argv) < min_num_params:
-                print('Error:Params:The number of parameters is less than two')
-                sys.exit()
-            file_name_cod = sys.argv[1]
-            file_name_lexeme = sys.argv[2]
-
-            if not os.path.exists(file_name_cod):
-                print('Error:Params:' + file_name_cod + ' File does not exist')
-                sys.exit()
-
-            source = open(file_name_cod, 'r')
-            result = open(file_name_lexeme, 'w')
-
-            return source, result
-        except OSError:
-            print('Error:Params:File not available')
-            sys.exit()
-
-    def scanner(self):
-        tokens = []
-        self.get_next_token()
-        while self.token.lexeme != self.SpecialSymbols['']:
-            if self.token.lexeme != self.IdentifiersLexemes['comment']:
-                tokens.append(self.token)
-                lexeme_string = self.lexeme_to_string()
-                self.result.write(lexeme_string)
-            self.get_next_token()
-        if self.errors == 0:
-
-            return tokens
-        else:
-            return False
-
-    def lexeme_to_string(self):
-        string = str(self.token.row) + '\tlex:' + str(self.token.lexeme)
-        if self.token.type != '':
-            string += '\t' + self.token.type + ':' + self.token.recval
-        if self.token.value != '':
-            string += '\tval:' + self.token.value
-        string += '\n'
-        return string
-
-    def get_next_token(self):
-        self.token = Token()
-        try:
-            while self.char.isspace():
-                if self.char == '\n':
-                    self.num_str += 1
-                self.get_next_char()
-
-            self.token.row = self.num_str
-
-            if self.char == '':
-                self.token.lexeme = self.SpecialSymbols[self.char]
-                return True
-
-            # Spec Symb Comment
-
-            elif self.char in self.SpecialSymbols.keys():
-                self.check_special_symbol()
-                return True
-
-            elif self.char.isdigit() or self.char == '.':
-                value = self.check_int()
-
-
-                if self.token.lexeme == '':
-                    self.check_real(value)
-
-                    if len(self.token.value) > 1:
-                        if self.token.value[0] == '0' and self.token.value[1] != '.':
-                            raise MyException("Zero at the beginning of the actual not allowed", self.token.value)
-                if self.token.lexeme == '':
-                    raise MyException("Number is not defined", value)
-
-                return True
-
-            elif self.char in self.CharsAlphabet:
-                self.check_special_word_or_id()
-                # label ID
-                return True
-            else:
-                value = ''
-                while not self.char_space_or_special_symbol():
-                    value += self.char
-                    self.get_next_char()
-                except_type = 'Lexeme is not defined'
-                raise MyException(except_type, value)
-
-        except MyException as ex:
-            self.errors += 1
-            while not self.char.isspace() and self.char not in self.SpecialSymbols.keys():
-                ex.value += self.char
-                self.get_next_char()
-            while self.char not in ('\n', ''):
-                self.get_next_char()
-            self.token.lexeme = self.IdentifiersLexemes['error']
-            self.token.value = ex.value
-            print('Error:' + str(self.num_str) + ':' + str(ex.value), ex.type)
-            return False
-
-    def get_next_char(self):
-        self.char = self.source.read(1)
-
-    def char_space_or_special_symbol(self):
-        if self.char.isspace() or self.char in self.SpecialSymbols.keys():
-            if self.char == '!':
-                self.get_next_char()
-                if self.char != '=':
-                    return False
-            return True
-        else:
-            return False
-
-    def check_special_word_or_id(self):
-            value = ''
-            while self.char in self.CharsAlphabet:
-                value += self.char
-                self.get_next_char()
-            if self.char_space_or_special_symbol():
-                if value in self.SpecialWords.keys():
-                    self.token.lexeme = self.SpecialWords[value]
-                    self.token.value = value
-                #
-                elif value == 'rem':
-                    if self.char not in ('', '\n', '\t', ' '):
-                        raise MyException("Expeted space", value)
-                    while self.char not in ('\n', ''):
-                        self.get_next_char()
-                    self.token.lexeme = self.IdentifiersLexemes['comment']
-                    self.token.value = value
-
-                else:
-                    self.token.lexeme = self.IdentifiersLexemes['id']
-                    self.token.value = value
-                return True
-
-            if self.char.isdigit():
-                while self.char in self.CharsAlphabet or self.char.isdigit():
-                    value += self.char
-                    self.get_next_char()
-                if not self.char_space_or_special_symbol():
-                    raise MyException("Expected space or special symbol", value)
-                self.token.lexeme = self.IdentifiersLexemes['id']
-                self.token.value = value
-                return True
-
-    def check_special_symbol(self):
-        self.token.lexeme = self.SpecialSymbols[self.char]
-        self.token.value = self.char
-        self.get_next_char()
-        return True
-
-    def check_int(self):
-            value = ''
-            if self.char == '0':
-                old = ''
-                value = self.char
-                self.get_next_char()
-                if self.char.lower() in ('b', 'x'):
-                    old = value
-                    value = self.char
-                    self.get_next_char()
-                recval = ''
-                while self.char in self.CharsNumSystem[value.lower()]:
-                    recval += self.char
-                    self.get_next_char()
-
-                if len(recval) == 0:
-                    if value == '0':
-                        recval = value
-                    else:
-                        raise MyException("Expected numbers", value)
-
-                if not self.char_space_or_special_symbol():
-                    raise MyException("Expected space or special symbol", value+recval)
-
-                self.token.lexeme = self.IdentifiersLexemes['int']
-                self.token.value = old + value + recval
-                self.token.type = self.IdentifiersLexemes['int'].lower()
-                self.token.recval = str(int(recval, int({'b': 2, '0': 8, 'x':  16}[value.lower()])))
-                return True
-
-            while self.char.isdigit():
-                value += self.char
-                self.get_next_char()
-
-            if self.char_space_or_special_symbol():
-                self.token.lexeme = self.IdentifiersLexemes['int']
-                self.token.value = value
-                self.token.type = self.IdentifiersLexemes['int'].lower()
-                self.token.recval = value
-                return True
-
-            return value
-
-    def check_real(self, value):
-        if not self.num_mb_real(value):
-            return False
-        if len(value) == 0:
-            return False
-
-        if 'e' in value.lower():
-            if self.char in ('+', '-') and value[-1].lower() == 'e':
-                value += self.char
-                self.get_next_char()
-
-            while self.char.isdigit():
-                value += self.char
-                self.get_next_char()
-
-            if not value[-1].isdigit():
-                raise MyException("Expected digits", value)
-
-        elif self.only_number_in_str(value):
-            while self.char.isdigit():
-                value += self.char
-                self.get_next_char()
-            if self.char == '.':
-                value += self.char
-                self.get_next_char()
-
-                if not self.char.isdigit():
-                    raise MyException("Expected number", value)
-                while self.char.isdigit():
-                    value += self.char
-                    self.get_next_char()
-
-                if self.char in ('e', 'E'):
-                    value += self.char
-                    self.get_next_char()
-                    if self.char in ('+', '-'):
-                        value += self.char
-                        self.get_next_char()
-                    if not self.char.isdigit():
-                        raise MyException("Expected number", value)
-                    while self.char.isdigit():
-                        value += self.char
-                        self.get_next_char()
-
-            elif self.char in ('e', 'E'):
-                value += self.char
-                self.get_next_char()
-                if self.char in ('+', '-'):
-                    value += self.char
-                    self.get_next_char()
-                if not self.char.isdigit():
-                    raise MyException("Expected number", value)
-                while self.char.isdigit():
-                    value += self.char
-                    self.get_next_char()
-            else:
-                raise MyException("Expected '.'/'e'", value)
-        else:
-            return False
-
-        if not self.char_space_or_special_symbol():
-            raise MyException("Expected space/special symbol", value)
-        self.token.lexeme = self.IdentifiersLexemes['real']
-        self.token.value = value
-        self.token.type = self.IdentifiersLexemes['real'].lower()
-        self.token.recval = self.real_to_exponential(value)
-        if not (float(self.token.recval) <= 3.402823466e+38) or self.token.recval == float('inf'):
-            raise MyException('The number out of range', self.token.value)
-        return True
-
-    def check_label(self):
-        if self.token.lexeme == self.IdentifiersLexemes['int']:
-            while self.char.isspace():
-                if self.char == '\n':
-                    self.num_str += 1
-                self.get_next_char()
-
-            if self.char == ':':
-                self.token.lexeme = self.IdentifiersLexemes['label']
-                self.token.value = self.token.recval
-                self.token.type = ''
-                self.token.recval = ''
-                self.get_next_char()
-            return True
-
-    @staticmethod
-    def num_mb_real(num):
-        exponent = False
-        for i in num:
-            if i in ('e', 'E'):
-                if not exponent:
-                    exponent = True
-                else:
-                    return False
-            elif not i.isdigit():
-                return False
-
-        return True
-
-    @staticmethod
-    def real_to_exponential(num):
-        if float(num) in (0, float('inf')):
-            return num
-        num = str(float(num))
-        std_num = num
-        pos = num.lower().find('e')
-        degree = 0
-        if pos != -1:
-            degree = int(num[pos+1:])
-            num = num[:pos]
-
-        pos = num.find('.')
-        if pos == -1:
-            integer = num
-            fraction = '0'
-        else:
-            integer = num[:pos]
-            fraction = num[pos + 1:]
-        if integer[0] == '0':
-            pos = 0
-            while fraction[pos] == '0':
-                degree -= 1
-                fraction = fraction[1:]
-
-            degree -= 1
-            integer = fraction[0]
-            fraction = fraction[1:]
-            num = integer + '.' + fraction + 'e' + str(degree)
-        else:
-            if len(integer) == 1:
-                return std_num
-            degree += pos - 1
-            fraction = integer[1:pos] + fraction
-            integer = integer[0]
-            while fraction[-1] == '0' and len(fraction) > 1:
-                fraction = fraction[:-1]
-            num = integer + '.' + fraction + 'e' + str(degree)
-
-        return num
-
-    @staticmethod
-    def check_num_str(num_str, chars_num):
-        if num_str == '':
-            return False
-
-        for num in num_str:
-            equal = False
-            for char in chars_num:
-                if char == num:
-                    equal = True
-                    break
-            if not equal:
-                return False
-        return True
-
-    @staticmethod
-    def only_number_in_str(string):
-        for i in string:
-            if not i.isdigit():
-                return False
-        return True
-
-
 class Tree:
     def __init__(self, tag=None, value=None, num_str=0):
         self.num_str = num_str
@@ -484,7 +64,6 @@ class Parser:
             print('Error:Params:Cannot write to given file')
             sys.exit()
 
-        # =======
         self.token = Token()
 
         self.labels = []
@@ -492,13 +71,11 @@ class Parser:
         self.in_cycle = False
         self.in_operand = False
 
-        self.MathOperations = [
-            'Add', 'Min', 'Mul', 'Div', 'Mod',
-            'EQ', 'NE', 'LT', 'GT', 'LE', 'GE'
-        ]
-        self.QualifierWords = {'skip': 'Skip', 'space': "Space", 'tab': 'Tab'}
-        self.SpecialWords = self.scanner.SpecialWords
-        self.SpecialSymbols = self.scanner.SpecialSymbols
+        self.MathOperations = ['Add', 'Min', 'Mul', 'Div', 'Mod', 'EQ', 'NE', 'LT', 'GT', 'LE', 'GE']
+        self.IDWordsAndSymbolAfterOperator = ['Semicolon', 'Else', 'End']
+
+        self.QualifierWords = {'\n': 'Skip', ' ': "Space", '\t': 'Tab'}
+
         self.IdentifiersLexemes = {
             'id': 'Id',
             'label': 'Label',
@@ -509,9 +86,31 @@ class Parser:
             'eof': 'EOF',
             'int': 'Int', 'real': 'Real'
         }
-        self.IDWordsAndSymbolAfterOperator = [
-            'Semicolon', 'Else', 'End'
-        ]
+
+        self.SpecialWords = {
+
+            '=': 'EQ', '<>': 'NE', '<': 'LT', '>': 'GT', '<=': 'LE', '>=': 'GE',
+            '+': 'Add', '-': 'Min', '*': 'Mul', 'div': 'Div', 'mod': 'Mod', ':=': 'Let',
+            'var': 'Var',
+            'tools': 'Tools',
+            'proc': 'Proc',
+            'if': 'If', 'else': 'Else', 'then': 'Then',
+            'begin': 'Beg', 'end': 'End',
+            'loop': 'Loop',
+            'int': 'TypeInt', 'real': 'TypeReal',
+            '\n': 'Skip', ' ': "Space", '\t': 'Tab',
+            'goto': 'Goto',
+            'read': 'Read', 'write': 'Write',
+            'cast': 'Cast',
+            'break': 'Break',
+        }
+
+        self.SpecialSymbols = {
+            '': 'eof',
+            '(': 'LRB', ')': 'RRB', '[': 'LSB', ']': 'RSB', '{': 'LCB', '}': 'RCB',
+            ':': 'Colon', ';': 'Semicolon', ',': 'Comma',
+            '!': 'Error'
+        }
 
     def tokenize_lexems(self, untokenized_lexemes):
         tokenized_lexemes = []
@@ -532,6 +131,8 @@ class Parser:
                 recval = lexeme[2].split(':')[1]
                 val = lexeme[3][4:]
                 token = Token(row=row, lexeme=lex, type_token=type, recval=recval, value=val)
+            elif lexeme == ['']:
+                token = Token(lexeme='eof')
 
             if not (token or lexeme):
                 sys.exit(1)
@@ -539,51 +140,25 @@ class Parser:
 
         return tokenized_lexemes
 
-    def get_next_lexeme(self):
-        if self.num_lexeme == -1:
-            self.token.id = self.SpecialSymbols['']
-        else:
-            self.token = self.lexemes[self.num_lexeme]
-            self.num_lexeme += 1
-            if self.num_lexeme > len(self.lexemes) - 1:
-                self.num_lexeme = -1
-
     def parsing(self):
         try:
             tree = self.is_program()
             self.tree.write('<?xml version="1.0" ?>\n')
             self.output_tree(tree, 0)
             print('OK')
-            return tree
+            # return tree
         except MyException as ex:
             msg_str = "Error:" + str(ex.type) + ':'
             if self.token.value != '':
                 msg_str += '"' + self.token.value + '"'
             msg_str += ex.value
             print(msg_str)
-            return False
+            # return False
 
-    def output_tree(self, tree, n):
-        self.tree.write('\t'*n + '<' + tree.tag)
-        # if tree.num_str != 0:
-        #    self.tree.write(str(tree.num_str))
-        if tree.value is not None:
-            self.tree.write('="'+tree.value+'"')
-        for atr in tree.atributes:
-            self.tree.write(' ' + atr.tag + '="' + atr.value + '"')
-        if len(tree.nodes) == 0:
-            self.tree.write('/>\n')
-        else:
-            self.tree.write('>\n')
-            for i in tree.nodes:
-                self.output_tree(i, n+1)
-            self.tree.write('\t'*n + '</' + tree.tag + '>' + '\n')
-
-    #################################################################
-    
     def is_program(self):
         if len(self.lexemes) == 0:
             raise MyException(self.tree.name, 'File empty')
+
         tree = Tree(tag='program')
         self.get_next_lexeme()
 
@@ -619,6 +194,17 @@ class Parser:
         tree.nodes.append(compound_node)
 
         return tree
+
+    def get_next_lexeme(self):
+        if self.num_lexeme == -1:
+            self.token.id = self.SpecialSymbols['']
+        else:
+            self.token = self.lexemes[self.num_lexeme]
+            self.num_lexeme += 1
+            if self.num_lexeme > len(self.lexemes) - 1:
+                self.num_lexeme = -1
+
+    # === END CORE STRUCTURE METHODS ===
     
     def is_compound(self):
         if self.token.lexeme != 'Beg':
@@ -816,29 +402,34 @@ class Parser:
             return qualifier_node
         return False
 
-    #################################################################
-    
+    #################################################################self.SpecialSymbols['[']
+
     def is_assignment(self):
-        if self.token.lexeme != 'Let':
+        if self.token.lexeme != 'LRB':
             return False
-        self.get_next_lexeme()
+
         assign_node = Tree(tag='assign', num_str=self.token.row)
 
-        variable_node = self.is_variable()
-        if not variable_node:
-            raise MyException(self.token.row, 'Expected variable')
-        assign_node.nodes.append(variable_node)
-        # ","
-        if self.token.lexeme != self.SpecialSymbols[',']:
-            raise MyException(self.token.row, 'Expected ","')
         self.get_next_lexeme()
-
-        # expression
         expression_node = self.is_expression()
         if not expression_node:
             raise MyException(self.token.row, 'Expected expression')
         assign_node.nodes.append(expression_node)
 
+        # self.get_next_lexeme()
+        variable_node = self.is_variable()
+        if not variable_node:
+            raise MyException(self.token.row, 'Expected variable')
+        assign_node.nodes.append(variable_node)
+
+        if self.token.lexeme != 'Let':
+            raise MyException(self.token.row, 'Expected :=')
+
+        self.get_next_lexeme()
+        if self.token.lexeme != 'RRB':
+            raise MyException(self.token.row, 'Expected )')
+
+        self.get_next_lexeme()
         return assign_node
     
     def is_expression(self):
@@ -1087,6 +678,22 @@ class Parser:
         self.get_next_lexeme()
 
         return call_tree
+
+    def output_tree(self, tree, n):
+        self.tree.write('\t'*n + '<' + tree.tag)
+        # if tree.num_str != 0:
+        #    self.tree.write(str(tree.num_str))
+        if tree.value is not None:
+            self.tree.write('="'+tree.value+'"')
+        for atr in tree.attributes:
+            self.tree.write(' ' + atr.tag + '="' + atr.value + '"')
+        if len(tree.nodes) == 0:
+            self.tree.write('/>\n')
+        else:
+            self.tree.write('>\n')
+            for i in tree.nodes:
+                self.output_tree(i, n+1)
+            self.tree.write('\t'*n + '</' + tree.tag + '>' + '\n')
 
 
 if __name__ == '__main__':

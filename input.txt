@@ -1,0 +1,7 @@
+Var int i[10]; real b[2]
+begin
+    (11 i :=);
+    begin
+        read i
+    end
+end;

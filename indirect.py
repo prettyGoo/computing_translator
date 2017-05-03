@@ -252,7 +252,7 @@ def get_next_lexema():
 
 
 def run():
-    lexeme = 'NoLex'
+    global lexeme
 
     while True:
         if not lexeme == 'EOF':

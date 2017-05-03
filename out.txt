@@ -1,29 +1,25 @@
 1	lex:Var	val:var
-1	lex:Id	val:int
+1	lex:TypeInt	val:int
 1	lex:Id	val:i
 1	lex:LSB	val:[
 1	lex:Int	int:10	val:10
 1	lex:RSB	val:]
-1	lex:Comma	val:,
-1	lex:Id	val:a
+1	lex:Semicolon	val:;
+1	lex:TypeReal	val:real
+1	lex:Id	val:b
 1	lex:LSB	val:[
 1	lex:Int	int:2	val:2
 1	lex:RSB	val:]
-1	lex:Semicolon	val:;
-1	lex:Id	val:real
-1	lex:Id	val:b
-1	lex:LSB	val:[
-1	lex:Int	int:3	val:3
-1	lex:RSB	val:]
-2	lex:Tools	val:tools
-2	lex:Proc	val:proc
-2	lex:Id	val:p
-3	lex:Id	val:box
-5	lex:End	val:end
-5	lex:Semicolon	val:;
-6	lex:Proc	val:proc
-6	lex:Id	val:c
-7	lex:Id	val:box
-9	lex:End	val:end
-10	lex:Id	val:box
-12	lex:End	val:end
+2	lex:Beg	val:beg
+3	lex:LRB	val:(
+3	lex:Int	int:11	val:11
+3	lex:Id	val:i
+3	lex:Let	val::=
+3	lex:RRB	val:)
+3	lex:Semicolon	val:;
+4	lex:Beg	val:beg
+5	lex:Read	val:read
+5	lex:Id	val:i
+6	lex:End	val:end
+7	lex:End	val:end
+7	lex:Semicolon	val:;

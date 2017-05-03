@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<program>
+	<var_declar>
+		<dfn type="typeint" name="i" length="10"/>
+		<dfn type="typereal" name="b" length="2"/>
+	</var_declar>
+	<compound>
+		<clause>
+			<assign>
+				<int val="11"/>
+				<var name="i"/>
+			</assign>
+		</clause>
+		<clause>
+			<compound>
+				<clause>
+					<read>
+						<var name="i"/>
+					</read>
+				</clause>
+			</compound>
+		</clause>
+	</compound>
+</program>

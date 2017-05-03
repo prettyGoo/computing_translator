@@ -46,7 +46,7 @@ class Scanner:
         }
         self.SpecialSymbols = {
             # individual spec symbols
-            # general special symbols
+            # general special sy9mbols
             '': 'eof',
             '(': 'LRB', ')': 'RRB', '[': 'LSB', ']': 'RSB',
             '{': 'LCB', '}': 'RCB',
@@ -547,7 +547,8 @@ class Parser:
         tree = Tree(tag='program')
         self.get_next_lexeme()
 
-        if self.token.id == self.SpecialWords['var']:
+        # if self.token.id == self.SpecialWords['var']:
+        if self.token.value == 'Var':
             var_node = Tree(tag='var_declar', num_str=self.token.num_str)
             expected_description = True
             while expected_description:

@@ -15,7 +15,7 @@ output_file = sys.argv[2]
 try:
     file = open('%s' % input_file, 'r')
 except FileNotFoundError:
-    print('Aborted: the file you are looking for does not exist\n')
+    print('Error:{}:The file does not exist\n'.format(input_file))
     sys.exit(0)
 
 output_file = open('%s' % output_file, 'w')
@@ -172,8 +172,12 @@ def get_next_lexema():
             tell_new_position()
             return 'Comma', ',', None
         if is_colon(char):
-            tell_new_position()
-            return 'Colon', ':', None
+            tell = file.tell()
+            if file.read(1) == '=':
+                file.seek(tell)
+            else:
+                tell_new_position()
+                return 'Colon', ':', None
         if is_semicolon(char):
             tell_new_position()
             return 'Semicolon', ';', None
@@ -248,7 +252,7 @@ def get_next_lexema():
 
 
 def run():
-    global lexeme
+    lexeme = 'NoLex'
 
     while True:
         if not lexeme == 'EOF':
@@ -258,3 +262,6 @@ def run():
             break
 
     file.close()
+
+
+run()

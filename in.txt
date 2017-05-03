@@ -1,0 +1,12 @@
+Var int i[10], a[2]; real b[3]
+Tools proc p
+Box
+
+End;
+proc c
+Box
+
+End
+Box
+
+End

@@ -29,7 +29,7 @@ def Is_bin_int(scaner_params):
         char = file.read(1).lower()
         value = get_detected_value(file, base_position, local_offset)
 
-        if not (is_letter(char) or is_digit(char) or is_colon(char)):
+        if not (is_letter(char) or is_digit(char)):
             return True, {'lexeme': 'Int', 'offset': local_offset, 'value': value}
         else:
             if is_hex_digit(char) or char == 'h':

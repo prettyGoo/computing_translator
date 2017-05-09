@@ -94,7 +94,7 @@ class Parser:
             'var': 'Var',
             'tools': 'Tools',
             'proc': 'Proc',
-            'if': 'If', 'else': 'Else', 'then': 'Then',
+            'case': 'Case', 'else': 'Else', 'then': 'Then', 'of': 'Of', 'or': 'Or',
             'begin': 'Beg', 'end': 'End',
             'loop': 'Loop',
             'int': 'TypeInt', 'real': 'TypeReal',
@@ -434,48 +434,43 @@ class Parser:
         return assign_node
     
     def is_expression(self):
-        if self.token.lexeme in self.MathOperations:
-            expression_node = Tree(tag='op', num_str=self.token.row)
-
-            kind_node = Tree(tag='kind', value=self.token.lexeme, num_str=self.token.row)
-            expression_node.attributes.append(kind_node)
-            self.get_next_lexeme()
-
-            operand_node = self.is_operand()
-            if not operand_node:
-                raise MyException(self.token.row, 'Expected operand')
-            expression_node.nodes.append(operand_node)
-
-            if kind_node.value == 'Mod' and operand_node.tag == 'real':
-                raise MyException(self.token.row, 'Real is not valid for mod operation')
-
-            operand_node = self.is_operand()
-            if not operand_node:
-                raise MyException(self.token.row, 'Expected operand')
-            expression_node.nodes.append(operand_node)
-
-            if kind_node.value == 'Mod' and operand_node.tag == 'real':
-                raise MyException(self.token.row, 'Real is not valid for mod operation')
-
-        elif self.token.lexeme == self.SpecialSymbols['(']:
+        if self.token.lexeme == self.SpecialSymbols['(']:
             expression_node = Tree(tag='op', num_str=self.token.row)
             self.get_next_lexeme()
 
-            if self.token.lexeme != 'Min':
-                raise MyException(self.token.row, 'Expected Min')
-            kind_node = Tree(tag='kind', value=self.token.lexeme, num_str=self.token.row)
-            expression_node.attributes.append(kind_node)
-            self.get_next_lexeme()
-
             operand_node = self.is_operand()
+            first_operand_node = operand_node
             if not operand_node:
                 raise MyException(self.token.row, 'Expected operand')
             expression_node.nodes.append(operand_node)
+
+            operand_node = self.is_operand()
+            second_operand_node = operand_node
+            might_long_operand = True
+            if operand_node:
+                expression_node.nodes.append(operand_node)
+            else:
+                might_long_operand = False
+
+            if might_long_operand:
+                if self.token.lexeme not in self.MathOperations:
+                    raise MyException(self.token.row, 'Expected math operation')
+
+                if first_operand_node.value == 'Mod' and first_operand_node.tag == 'real' or \
+                   second_operand_node.value == 'Mod' and second_operand_node.tag == 'real':
+                    raise MyException(self.token.row, 'Real is not valid for mod operation')
+
+                self.get_next_lexeme()
+            else:
+                if self.token.lexeme != 'Min':
+                    raise MyException(self.token.row, 'Expected -')
+                kind_node = Tree(tag='kind', value=self.token.lexeme, num_str=self.token.row)
+                expression_node.attributes.append(kind_node)
+                self.get_next_lexeme()
 
             if self.token.lexeme != self.SpecialSymbols[')']:
                 raise MyException(self.token.row, 'Expected ")"')
             self.get_next_lexeme()
-
         else:
             if self.in_operand:
                 self.in_operand = False
@@ -539,50 +534,102 @@ class Parser:
         return op_nodes[0]
 
     #################################################################
-    
     def is_conditional(self):
-        if self.token.lexeme != self.SpecialWords['if']:
+        if self.token.lexeme != self.SpecialWords['case']:
             return False
         start_line = self.token.row
         self.get_next_lexeme()
-        conditional_tree = Tree(tag='if', num_str=self.token.row)
+        conditional_tree = Tree(tag='case', num_str=self.token.row)
 
         expression_node = self.is_expression()
         if not expression_node:
             raise MyException(self.token.row, 'Expected expression')
         conditional_tree.nodes.append(expression_node)
 
-        if self.token.lexeme != self.SpecialWords['then']:
-            raise MyException(self.token.row, 'Expected "then"')
-        then_node = Tree(tag='then', num_str=self.token.row)
-        expected_operator = True
-        while expected_operator:
-            self.get_next_lexeme()
-            operator_node = self.is_operator()
-            if not operator_node:
-                raise MyException(self.token.row, 'Expected operator')
-            then_node.nodes.append(operator_node)
-            if self.token.lexeme != self.SpecialSymbols[';']:
-                expected_operator = False
+        if self.token.lexeme != self.SpecialWords['of']:
+            raise MyException(self.token.row, 'Expected "of"')
+        of_node = Tree(tag='of', num_str=self.token.row)
+        self.get_next_lexeme()
 
-        conditional_tree.nodes.append(then_node)
+        lbls = list()
+
+        if self.token.lexeme != self.IdentifiersLexemes['int']:
+            if self.token.lexeme != self.IdentifiersLexemes['label']:
+                raise MyException(self.token.row, 'Expected int')
+            else:
+                number_node = Tree(tag='int', num_str=self.token.row)
+                number_node.attributes.append(Tree(tag='val', value=self.token.value[:-1], num_str=self.token.row))
+                of_node.nodes.append(number_node)
+                lbls.append(self.token.value[:-1])
+        else:
+            number_node = Tree(tag=self.token.type, num_str=self.token.row)
+            number_node.attributes.append(Tree(tag='val', value=self.token.recval, num_str=self.token.row))
+            of_node.nodes.append(number_node)
+            lbls.append(self.token.recval)
+
+        if self.token.lexeme == self.IdentifiersLexemes['label']:
+            if self.token.value[-1] != ':':
+                raise MyException(self.token.row, 'Expected ":"')
+        else:
+            self.get_next_lexeme()
+            if self.token.lexeme != self.SpecialSymbols[':']:
+                raise MyException(self.token.row, 'Expected ":"')
+
+        self.get_next_lexeme()
+
+        unlabelled_node = self.is_unlabelled()
+        if not unlabelled_node:
+            raise MyException(self.token.row, 'Expected operator')
+        of_node.nodes.append(unlabelled_node)
+        conditional_tree.nodes.append(of_node)
+
+        while self.token.lexeme == self.SpecialWords['or']:
+            or_node = Tree(tag='or', num_str=self.token.row)
+            self.get_next_lexeme()
+
+            if self.token.lexeme != self.IdentifiersLexemes['int']:
+                if self.token.lexeme != self.IdentifiersLexemes['label']:
+                    raise MyException(self.token.row, 'Expected int')
+                else:
+                    if self.token.recval in lbls:
+                        raise MyException(self.token.row, 'Repeated label name')
+                    number_node = Tree(tag='int', num_str=self.token.row)
+                    number_node.attributes.append(Tree(tag='val', value=self.token.value[:-1], num_str=self.token.row))
+                    of_node.nodes.append(number_node)
+                    lbls.append(self.token.value[:-1])
+            else:
+                if self.token.recval in lbls:
+                    raise MyException(self.token.row, 'Repeated label name')
+                number_node = Tree(tag=self.token.type, num_str=self.token.row)
+                number_node.attributes.append(Tree(tag='val', value=self.token.recval, num_str=self.token.row))
+                of_node.nodes.append(number_node)
+                lbls.append(self.token.recval)
+
+            if self.token.lexeme == self.IdentifiersLexemes['label']:
+                if self.token.value[-1] != ':':
+                    raise MyException(self.token.row, 'Expected ":"')
+            else:
+                self.get_next_lexeme()
+                if self.token.lexeme != self.SpecialSymbols[':']:
+                    raise MyException(self.token.row, 'Expected ":"')
+
+            self.get_next_lexeme()
+
+            unlabelled_node = self.is_unlabelled()
+            if not unlabelled_node:
+                raise MyException(self.token.row, 'Expected operator')
+            or_node.nodes.append(unlabelled_node)
+            conditional_tree.nodes.append(of_node)
 
         if self.token.lexeme == self.SpecialWords['else']:
-            else_node = Tree(tag='case', num_str=self.token.row)
-            expected_operator = True
-            while expected_operator:
-                self.get_next_lexeme()
-                operator_node = self.is_operator()
-                if not operator_node:
-                    raise MyException(self.token.row, 'Expected operator')
-                else_node.nodes.append(operator_node)
-                if self.token.lexeme != self.SpecialSymbols[';']:
-                    expected_operator = False
-            conditional_tree.nodes.append(else_node)
+            else_node = Tree(tag='then', num_str=self.token.row)
+            self.get_next_lexeme()
 
-        if self.token.lexeme != self.SpecialWords['end']:
-            raise MyException(start_line, 'Expected "end"')
-        self.get_next_lexeme()
+            unlabelled_node = self.is_unlabelled()
+            if not unlabelled_node:
+                raise MyException(self.token.row, 'Expected operator')
+            else_node.nodes.append(unlabelled_node)
+            conditional_tree.nodes.append(else_node)
 
         return conditional_tree
     #################################################################

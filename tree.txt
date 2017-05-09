@@ -20,5 +20,46 @@
 				</clause>
 			</compound>
 		</clause>
+		<clause>
+			<compound>
+				<clause>
+					<case>
+						<op>
+							<var name="i"/>
+							<var name="i"/>
+						</op>
+						<of>
+							<int val="1"/>
+							<write>
+								<int val="1"/>
+							</write>
+							<int val="2"/>
+							<int val="3"/>
+						</of>
+						<of>
+							<int val="1"/>
+							<write>
+								<int val="1"/>
+							</write>
+							<int val="2"/>
+							<int val="3"/>
+						</of>
+						<of>
+							<int val="1"/>
+							<write>
+								<int val="1"/>
+							</write>
+							<int val="2"/>
+							<int val="3"/>
+						</of>
+						<then>
+							<write>
+								<int val="10"/>
+							</write>
+						</then>
+					</case>
+				</clause>
+			</compound>
+		</clause>
 	</compound>
 </program>

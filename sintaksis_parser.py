@@ -710,15 +710,16 @@ class Parser:
     #################################################################
     
     def is_call(self):
-        if self.token.lexeme != self.IdentifiersLexemes['id']:
+        if self.token.lexeme != self.SpecialWords['call']:
             return False
+
+        if self.token.lexeme != self.IdentifiersLexemes['id']:
+            raise MyException(self.token.row, ' Expected id')
+
         call_tree = Tree(tag='call', num_str=self.token.row)
         id_node = Tree(tag='var', num_str=self.token.row)
         id_node.attributes.append(Tree(tag='name', value=self.token.value, num_str=self.token.row))
         call_tree.nodes.append(id_node)
-        self.get_next_lexeme()
-        if self.token.lexeme != self.SpecialSymbols['(']:
-            raise MyException(self.token.row, ' Expected "("')
         self.get_next_lexeme()
 
         variable_node = self.is_variable()
@@ -731,8 +732,9 @@ class Parser:
             if not variable_node:
                 raise MyException(self.token.row, ' Expected variable')
 
-        if self.token.lexeme != self.SpecialSymbols[')']:
-            raise MyException(self.token.row, 'Expected ")"')
+        if self.token.lexeme != self.SpecialWords['end']:
+            raise MyException(self.token.row, 'Expected end')
+        
         self.get_next_lexeme()
 
         return call_tree

@@ -12,6 +12,6 @@ begin
         or 3:
             write 7
         else
-            write 10
+             (b i cast)
     end
 end;

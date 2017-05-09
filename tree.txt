@@ -53,9 +53,10 @@
 							<int val="3"/>
 						</of>
 						<then>
-							<write>
-								<int val="10"/>
-							</write>
+							<cast>
+								<var name="b"/>
+								<var name="i"/>
+							</cast>
 						</then>
 					</case>
 				</clause>

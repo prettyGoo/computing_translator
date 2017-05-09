@@ -42,8 +42,11 @@
 13	lex:Write	val:write
 13	lex:Int	int:7	val:7
 14	lex:Else	val:else
-15	lex:Write	val:write
-15	lex:Int	int:10	val:10
+15	lex:LRB	val:(
+15	lex:Id	val:b
+15	lex:Id	val:i
+15	lex:Cast	val:cast
+15	lex:RRB	val:)
 16	lex:End	val:end
 17	lex:End	val:end
 17	lex:Semicolon	val:;

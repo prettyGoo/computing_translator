@@ -406,33 +406,35 @@ class Parser:
     #################################################################self.SpecialSymbols['[']
 
     def is_assignment(self):
-        if self.token.lexeme != 'LRB':
+        if self.token.lexeme != self.SpecialSymbols['(']:
             return False
-
+        checkpoint = self.num_lexeme
+        self.get_next_lexeme()
         assign_node = Tree(tag='assign', num_str=self.token.row)
 
-        self.get_next_lexeme()
         expression_node = self.is_expression()
         if not expression_node:
-            raise MyException(self.token.row, 'Expected expression')
+            self.get_previous_lexeme(checkpoint)
+            return False
         assign_node.nodes.append(expression_node)
 
-        # self.get_next_lexeme()
         variable_node = self.is_variable()
         if not variable_node:
-            raise MyException(self.token.row, 'Expected variable')
+            self.get_previous_lexeme(checkpoint)
+            return False
         assign_node.nodes.append(variable_node)
 
         if self.token.lexeme != 'Let':
-            raise MyException(self.token.row, 'Expected :=')
-
+            self.get_previous_lexeme(checkpoint)
+            return False
         self.get_next_lexeme()
-        if self.token.lexeme != 'RRB':
-            raise MyException(self.token.row, 'Expected )')
 
+        if self.token.lexeme != self.SpecialSymbols[')']:
+            raise MyException(self.token.row, 'Expected ")"')
         self.get_next_lexeme()
+
         return assign_node
-    
+
     def is_expression(self):
         if self.token.lexeme == self.SpecialSymbols['(']:
             expression_node = Tree(tag='op', num_str=self.token.row)
@@ -493,26 +495,34 @@ class Parser:
                 return op_node
         self.in_operand = False
         return False
-    
+
     def is_adduction(self):
-        if self.token.lexeme != self.SpecialWords['cast']:
+        if self.token.lexeme != self.SpecialSymbols['(']:
             return False
+        checkpoint = self.num_lexeme
         self.get_next_lexeme()
         variables = []
 
         variable_node = self.is_variable()
         if not variable_node:
-            raise MyException(self.token.row, 'Expected variable')
+            self.get_previous_lexeme(checkpoint)
+            return False
         variables.append(variable_node)
-
-        if self.token.lexeme != self.SpecialSymbols[',']:
-            raise MyException(self.token.row, 'Expected ","')
-        self.get_next_lexeme()
 
         variable_node = self.is_variable()
         if not variable_node:
-            raise MyException(self.token.row, 'Expected variable')
+            self.get_previous_lexeme(checkpoint)
+            return False
         variables.append(variable_node)
+
+        if self.token.lexeme != self.SpecialWords['cast']:
+            self.get_previous_lexeme(checkpoint)
+            return False
+        self.get_next_lexeme()
+
+        if self.token.lexeme != self.SpecialSymbols[')']:
+            raise MyException(self.token.row, 'Expected ")"')
+        self.get_next_lexeme()
 
         cast_node = Tree(tag='cast', num_str=self.token.row)
         for var in variables:

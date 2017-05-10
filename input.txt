@@ -1,17 +1,7 @@
-Var int i[10]; real b[2]
 begin
-    (11 i :=);
-    begin
-        read i
-    end;
-    begin
-        case (i i +) of 1:
-            write 1
-        or 2:
-            write 8
-        or 3:
-            write 7
-        else
-             (b i cast)
-    end
-end;
+    loop
+        begin
+            break;
+        end;
+        write 1;
+end

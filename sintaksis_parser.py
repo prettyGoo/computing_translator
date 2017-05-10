@@ -50,10 +50,10 @@ class Parser:
 
         file_content = file.read()
 
-        if file_content:
-            self.lexemes = []
-            self.lexemes = self.tokenize_lexemes(file_content)
-        else:
+        self.lexemes = []
+        self.lexemes = self.tokenize_lexemes(file_content)
+        if len(self.lexemes) == 0 or (len(self.lexemes) == 1 and self.lexemes[0].lexeme == 'eof'):
+            print('Error:Params: Empty file\n')
             exit(0)
 
         self.num_lexeme = 0
@@ -72,7 +72,7 @@ class Parser:
         self.in_operand = False
 
         self.MathOperations = ['Add', 'Min', 'Mul', 'Div', 'Mod', 'EQ', 'NE', 'LT', 'GT', 'LE', 'GE']
-        self.IDWordsAndSymbolAfterOperator = ['Semicolon', 'Else', 'End']
+        self.IDWordsAndSymbolAfterOperator = ['Semicolon', 'Else', 'Or']
 
         self.QualifierWords = {'\n': 'Skip', ' ': "Space", '\t': 'Tab'}
 
@@ -103,6 +103,7 @@ class Parser:
             'read': 'Read', 'write': 'Write',
             'cast': 'Cast',
             'break': 'Break',
+            'call': 'Call'
         }
 
         self.SpecialSymbols = {
@@ -133,7 +134,7 @@ class Parser:
                 val = lexeme[3][4:]
                 token = Token(row=row, lexeme=lex, type_token=type, recval=recval, value=val)
             elif lexeme == ['']:
-                token = Token(lexeme='eof')
+                continue
 
             if not (token or lexeme):
                 sys.exit(1)
@@ -216,6 +217,9 @@ class Parser:
         expected_operator = True
         while expected_operator:
             self.get_next_lexeme()
+            if self.token.lexeme == 'End':
+                self.get_next_lexeme()
+                return compound_tree
             op_node = self.is_operator()
             if not op_node:
                 raise MyException(self.token.row, 'Expected operator')
@@ -276,20 +280,16 @@ class Parser:
 
     def is_operator(self):
         label_node = None
-        if self.token.lexeme == self.IdentifiersLexemes['int']:
-            checkpoint = self.num_lexeme
-            label_name = self.token.value
+        if self.token.lexeme == 'Label':
+            label_name = self.token.value[:-1]
             label_num_str = self.token.row
+            if label_name in self.labels:
+                raise MyException(self.token.row, 'Repeated label name')
+            self.labels.append(label_name)
+            label_node = Tree(tag='label', num_str=label_num_str)
+            label_node.attributes.append(Tree(tag='name', value=label_name, num_str=label_num_str))
             self.get_next_lexeme()
-            if self.token.lexeme == self.SpecialSymbols[':']:
-                if label_name in self.labels:
-                    raise MyException(label_num_str, 'Repeated label name')
-                self.labels.append(label_name)
-                label_node = Tree(tag='label', num_str=label_num_str)
-                label_node.attributes.append(Tree(tag='name', value=label_name, num_str=label_num_str))
-                self.get_next_lexeme()
-            else:
-                self.get_previous_lexeme(checkpoint)
+
         unlabelled_node = self.is_unlabelled()
 
         if not unlabelled_node:
@@ -307,11 +307,13 @@ class Parser:
     def is_unlabelled(self):
         unlabelled_functions = [self.is_compound, self.is_assignment, self.is_adduction,
                                 self.is_transition, self.is_conditional, self.is_cycle,
-                                self.is_input, self.is_output, self.is_call, self.is_empty
+                                self.is_input, self.is_output, self.is_empty, self.is_call
                                 ]
         if self.in_cycle and self.token.lexeme == self.SpecialWords['break']:
             self.get_next_lexeme()
             return Tree(tag='break', num_str=self.token.row)
+        elif not self.in_cycle and self.token.lexeme == self.SpecialWords['break']:
+            raise MyException(self.token.row, 'Unexpected break')
         for func in unlabelled_functions:
             unlabelled_node = func()
             if unlabelled_node:
@@ -321,6 +323,7 @@ class Parser:
 
     def is_empty(self):
         if self.token.lexeme in self.IDWordsAndSymbolAfterOperator:
+            print('empty')
             return Tree(tag='empty', num_str=self.token.row)
         return False
 
@@ -734,7 +737,7 @@ class Parser:
 
         if self.token.lexeme != self.SpecialWords['end']:
             raise MyException(self.token.row, 'Expected end')
-        
+
         self.get_next_lexeme()
 
         return call_tree

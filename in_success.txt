@@ -1,0 +1,11 @@
+{asdfsdaf
+var int i[1]
+begin
+case 1 of 1:;
+case 1 of 1: else;
+{case 1 of 1:; or 1:;}
+case ii(i) of 1:;
+case 1 of 1: case 1 of 1:;
+break
+end
+}

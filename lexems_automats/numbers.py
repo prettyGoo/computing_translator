@@ -122,7 +122,7 @@ def Is_dec_int_or_label(scanner_params):
         value = get_detected_value(file, base_position, local_offset)
 
         if local_lexeme == 'Int' and not (is_letter(afterchar) or is_digit(afterchar)) \
-           or local_lexeme == 'Label' and is_split(afterchar):
+           or local_lexeme == 'Label' and (is_split(afterchar) or afterchar == ';'):
                 return True, {'lexeme': local_lexeme, 'offset': local_offset, 'value': value}
         else:
             return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char}

@@ -18,6 +18,7 @@ class Token:
         self.recval = recval
         self.num_str = 0
 
+
 class Scanner:
     def __init__(self):
         self.source, self.result = self.open_files()
@@ -39,6 +40,7 @@ class Scanner:
             'read': 'Read', 'write': 'Write',
             'cast': 'Cast',
             'break': 'Break',
+            'call': 'Call'
         }
         self.SpecialSymbols = {
             
@@ -107,7 +109,7 @@ class Scanner:
                 self.result.write(lexeme_string)
             self.get_next_token()
         if self.errors == 0:
-            
+
             return tokens
         else:
             return False
@@ -135,7 +137,7 @@ class Scanner:
                 self.token.id = self.SpecialSymbols[self.char]
                 return True
 
-            
+
             elif self.char == '{':
                 while self.char not in ('}', ''):
                     self.get_next_char()
@@ -158,7 +160,7 @@ class Scanner:
 
                 if self.token.id == '':
                     self.check_real(value)
-                    
+
                     if len(self.token.value) > 1:
                         if self.token.value[0] == '0' and self.token.value[1] != '.':
                             raise MyException("Zero at the beginning of the actual not allowed", self.token.value)
@@ -169,7 +171,7 @@ class Scanner:
 
             elif self.char in self.CharsAlphabet:
                 self.check_special_word_or_id()
-                
+
                 return True
             else:
                 value = ''
@@ -203,7 +205,7 @@ class Scanner:
             return True
         else:
             return False
-    
+
     def check_special_word_or_id(self):
             value = ''
             while self.char in self.CharsAlphabet:
@@ -228,7 +230,7 @@ class Scanner:
                 self.token.id = self.IdentifiersLexemes['id']
                 self.token.value = value
                 return True
-    
+
     def check_special_symbol(self):
         value = self.char
         self.get_next_char()
@@ -240,7 +242,7 @@ class Scanner:
         self.token.id = self.SpecialSymbols[value]
         self.token.value = value
         return True
-    
+
     def check_int(self):
             value = ''
             if self.char == '0':
@@ -283,7 +285,7 @@ class Scanner:
                 return True
 
             return value
-    
+
     def check_real(self, value):
         if len(value) != 1:
             raise MyException("Lexeme is not defined", value)
@@ -319,7 +321,7 @@ class Scanner:
         if not (float(self.token.recval) <= 3.402823466e+38) or self.token.recval == float('inf'):
             raise MyException('The number out of range', self.token.value)
         return True
-    
+
     def check_label(self):
         if self.token.id == self.IdentifiersLexemes['id']:
             while self.char.isspace():
@@ -676,7 +678,7 @@ class Parser:
             self.get_next_lexeme()
             variable_node = self.is_variable()
             if not variable_node:
-                raise MyException(self.token.num_str, 'Expected variable')  # ���������� ��������� ����������
+                raise MyException(self.token.num_str, 'Expected variable')
             read_node.nodes.append(variable_node)
 
             if self.token.id != self.SpecialSymbols[',']:

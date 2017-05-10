@@ -106,7 +106,7 @@ def get_next_lexema():
             comment_loop()
             comment_mode = True
             tell_new_position()
-            return 'LCB', '{', None
+            return 'Comment', '', None
 
         if is_right_curly_bracket(char):
             if not comment_mode:

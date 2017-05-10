@@ -1,66 +1,21 @@
 <?xml version="1.0" ?>
 <program>
-	<var_declar>
-		<dfn type="typeint" name="i" length="10"/>
-		<dfn type="typereal" name="b" length="2"/>
-	</var_declar>
 	<compound>
 		<clause>
-			<assign>
-				<int val="11"/>
-				<var name="i"/>
-			</assign>
-		</clause>
-		<clause>
-			<compound>
+			<for>
 				<clause>
-					<read>
-						<var name="i"/>
-					</read>
+					<compound>
+						<clause>
+							<break/>
+						</clause>
+					</compound>
 				</clause>
-			</compound>
-		</clause>
-		<clause>
-			<compound>
 				<clause>
-					<case>
-						<op>
-							<var name="i"/>
-							<var name="i"/>
-						</op>
-						<of>
-							<int val="1"/>
-							<write>
-								<int val="1"/>
-							</write>
-							<int val="2"/>
-							<int val="3"/>
-						</of>
-						<of>
-							<int val="1"/>
-							<write>
-								<int val="1"/>
-							</write>
-							<int val="2"/>
-							<int val="3"/>
-						</of>
-						<of>
-							<int val="1"/>
-							<write>
-								<int val="1"/>
-							</write>
-							<int val="2"/>
-							<int val="3"/>
-						</of>
-						<then>
-							<cast>
-								<var name="b"/>
-								<var name="i"/>
-							</cast>
-						</then>
-					</case>
+					<write>
+						<int val="1"/>
+					</write>
 				</clause>
-			</compound>
+			</for>
 		</clause>
 	</compound>
 </program>

@@ -1,52 +1,11 @@
-1	lex:Var	val:var
-1	lex:TypeInt	val:int
-1	lex:Id	val:i
-1	lex:LSB	val:[
-1	lex:Int	int:10	val:10
-1	lex:RSB	val:]
-1	lex:Semicolon	val:;
-1	lex:TypeReal	val:real
-1	lex:Id	val:b
-1	lex:LSB	val:[
-1	lex:Int	int:2	val:2
-1	lex:RSB	val:]
-2	lex:Beg	val:beg
-3	lex:LRB	val:(
-3	lex:Int	int:11	val:11
-3	lex:Id	val:i
-3	lex:Let	val::=
-3	lex:RRB	val:)
-3	lex:Semicolon	val:;
-4	lex:Beg	val:beg
-5	lex:Read	val:read
-5	lex:Id	val:i
-6	lex:End	val:end
+1	lex:Beg	val:beg
+2	lex:Loop	val:loop
+3	lex:Beg	val:beg
+4	lex:Break	val:break
+4	lex:Semicolon	val:;
+5	lex:End	val:end
+5	lex:Semicolon	val:;
+6	lex:Write	val:write
+6	lex:Int	int:1	val:1
 6	lex:Semicolon	val:;
-7	lex:Beg	val:beg
-8	lex:Case	val:case
-8	lex:LRB	val:(
-8	lex:Id	val:i
-8	lex:Id	val:i
-8	lex:Add	val:+
-8	lex:RRB	val:)
-8	lex:Of	val:of
-8	lex:Label	val:1:
-9	lex:Write	val:write
-9	lex:Int	int:1	val:1
-10	lex:Or	val:or
-10	lex:Label	val:2:
-11	lex:Write	val:write
-11	lex:Int	int:8	val:8
-12	lex:Or	val:or
-12	lex:Label	val:3:
-13	lex:Write	val:write
-13	lex:Int	int:7	val:7
-14	lex:Else	val:else
-15	lex:LRB	val:(
-15	lex:Id	val:b
-15	lex:Id	val:i
-15	lex:Cast	val:cast
-15	lex:RRB	val:)
-16	lex:End	val:end
-17	lex:End	val:end
-17	lex:Semicolon	val:;
+7	lex:End	val:end

@@ -2,20 +2,169 @@
 <program>
 	<compound>
 		<clause>
-			<for>
-				<clause>
-					<compound>
-						<clause>
-							<break/>
-						</clause>
-					</compound>
-				</clause>
-				<clause>
+			<case>
+				<int val="1"/>
+				<of>
+					<int val="1"/>
+					<empty/>
+				</of>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<int val="1"/>
+				<of>
+					<int val="1"/>
+					<empty/>
+				</of>
+				<or>
+					<int val="2"/>
+					<empty/>
+				</or>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<int val="1"/>
+				<of>
+					<int val="1"/>
+					<empty/>
+				</of>
+				<case>
+					<empty/>
+				</case>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<var name="i"/>
+				<of>
+					<int val="1"/>
 					<write>
 						<int val="1"/>
 					</write>
-				</clause>
-			</for>
+				</of>
+				<or>
+					<int val="2"/>
+					<empty/>
+				</or>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<var name="i"/>
+				<of>
+					<int val="1"/>
+					<write>
+						<int val="1"/>
+					</write>
+				</of>
+				<or>
+					<int val="2"/>
+					<write>
+						<int val="2"/>
+					</write>
+				</or>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<int val="1"/>
+				<of>
+					<int val="1"/>
+					<empty/>
+				</of>
+				<case>
+					<write>
+						<int val="1"/>
+					</write>
+				</case>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<int val="1"/>
+				<of>
+					<int val="1"/>
+					<compound>
+						<clause>
+							<write>
+								<int val="1"/>
+							</write>
+						</clause>
+						<clause>
+							<read>
+								<var name="i"/>
+							</read>
+						</clause>
+					</compound>
+				</of>
+				<case>
+					<empty/>
+				</case>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<var name="i" index="1"/>
+				<of>
+					<int val="1"/>
+					<empty/>
+				</of>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<var name="i"/>
+				<of>
+					<int val="1"/>
+					<case>
+						<var name="i"/>
+						<of>
+							<int val="1"/>
+							<empty/>
+						</of>
+					</case>
+				</of>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<var name="i"/>
+				<of>
+					<int val="1"/>
+					<case>
+						<var name="i"/>
+						<of>
+							<int val="1"/>
+							<empty/>
+						</of>
+					</case>
+				</of>
+			</case>
+		</clause>
+		<clause>
+			<case>
+				<var name="i" index="1"/>
+				<of>
+					<int val="1"/>
+					<case>
+						<int val="1"/>
+						<of>
+							<int val="1"/>
+							<empty/>
+						</of>
+						<or>
+							<int val="2"/>
+							<empty/>
+						</or>
+						<or>
+							<int val="3"/>
+							<empty/>
+						</or>
+					</case>
+				</of>
+			</case>
 		</clause>
 	</compound>
 </program>

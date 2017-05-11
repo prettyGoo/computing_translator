@@ -1,11 +1,47 @@
-{asdfsdaf
-var int i[1]
 begin
-case 1 of 1:;
-case 1 of 1: else;
-{case 1 of 1:; or 1:;}
-case ii(i) of 1:;
-case 1 of 1: case 1 of 1:;
-break
+    begin
+        loop
+            begin
+                loop
+                    break;
+                end;
+                write 1
+            end;
+        end;
+        ;
+        loop
+            ; read i;
+        end
+    end
 end
-}
+begin
+    case 1 of 1:; or 1:;
+    loop
+        begin
+            break;
+        end;
+        write 1;
+        begin
+            case 1 of 1:;
+            case 1 of 1: else;
+            case 1 of 1:; or 1:;
+            case ii(i) of 1:;
+        end;
+end
+
+begin
+    case i of 1:;
+    loop
+        begin
+            break;
+        end;
+        write 1;
+        begin
+            case i of 1:;
+            {case i of 2: else;}
+            {case i of 3 else; else;}
+            {case i of 4:; or 5:;}
+            {case i of 6:; or 7:; or 8:;}
+            {case i of 10:; or 11:; or 12:; else;}
+        end;
+end

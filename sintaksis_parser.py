@@ -560,34 +560,17 @@ class Parser:
         conditional_tree.nodes.append(expression_node)
 
         if self.token.lexeme != self.SpecialWords['of']:
-            raise MyException(self.token.row, 'Expected "of"')
+            raise MyException(self.token.row, 'Expected of')
         of_node = Tree(tag='of', num_str=self.token.row)
         self.get_next_lexeme()
 
         lbls = list()
-
-        if self.token.lexeme != self.IdentifiersLexemes['int']:
-            if self.token.lexeme != self.IdentifiersLexemes['label']:
-                raise MyException(self.token.row, 'Expected int')
-            else:
-                number_node = Tree(tag='int', num_str=self.token.row)
-                number_node.attributes.append(Tree(tag='val', value=self.token.value[:-1], num_str=self.token.row))
-                of_node.nodes.append(number_node)
-                lbls.append(self.token.value[:-1])
-        else:
-            number_node = Tree(tag=self.token.type, num_str=self.token.row)
-            number_node.attributes.append(Tree(tag='val', value=self.token.recval, num_str=self.token.row))
-            of_node.nodes.append(number_node)
-            lbls.append(self.token.recval)
-
-        if self.token.lexeme == self.IdentifiersLexemes['label']:
-            if self.token.value[-1] != ':':
-                raise MyException(self.token.row, 'Expected ":"')
-        else:
-            self.get_next_lexeme()
-            if self.token.lexeme != self.SpecialSymbols[':']:
-                raise MyException(self.token.row, 'Expected ":"')
-
+        if self.token.lexeme != 'Label':
+            raise MyException(self.token.row, 'Expected int:')
+        number_node = Tree(tag='int', num_str=self.token.row)
+        number_node.attributes.append(Tree(tag='val', value=self.token.value[:-1], num_str=self.token.row))
+        of_node.nodes.append(number_node)
+        lbls.append(self.token.value[:-1])
         self.get_next_lexeme()
 
         unlabelled_node = self.is_unlabelled()
@@ -600,42 +583,24 @@ class Parser:
             or_node = Tree(tag='or', num_str=self.token.row)
             self.get_next_lexeme()
 
-            if self.token.lexeme != self.IdentifiersLexemes['int']:
-                if self.token.lexeme != self.IdentifiersLexemes['label']:
-                    raise MyException(self.token.row, 'Expected int')
-                else:
-                    if self.token.recval in lbls:
-                        raise MyException(self.token.row, 'Repeated label name')
-                    number_node = Tree(tag='int', num_str=self.token.row)
-                    number_node.attributes.append(Tree(tag='val', value=self.token.value[:-1], num_str=self.token.row))
-                    of_node.nodes.append(number_node)
-                    lbls.append(self.token.value[:-1])
-            else:
-                if self.token.recval in lbls:
-                    raise MyException(self.token.row, 'Repeated label name')
-                number_node = Tree(tag=self.token.type, num_str=self.token.row)
-                number_node.attributes.append(Tree(tag='val', value=self.token.recval, num_str=self.token.row))
-                of_node.nodes.append(number_node)
-                lbls.append(self.token.recval)
-
-            if self.token.lexeme == self.IdentifiersLexemes['label']:
-                if self.token.value[-1] != ':':
-                    raise MyException(self.token.row, 'Expected ":"')
-            else:
-                self.get_next_lexeme()
-                if self.token.lexeme != self.SpecialSymbols[':']:
-                    raise MyException(self.token.row, 'Expected ":"')
-
+            if self.token.lexeme != 'Label':
+                raise MyException(self.token.row, 'Expected int:')
+            if self.token.value[:-1] in lbls:
+                raise MyException(self.token.row, 'Repeated label name')
+            number_node = Tree(tag='int', num_str=self.token.row)
+            number_node.attributes.append(Tree(tag='val', value=self.token.value[:-1], num_str=self.token.row))
+            or_node.nodes.append(number_node)
+            lbls.append(self.token.value[:-1])
             self.get_next_lexeme()
 
             unlabelled_node = self.is_unlabelled()
             if not unlabelled_node:
                 raise MyException(self.token.row, 'Expected operator')
             or_node.nodes.append(unlabelled_node)
-            conditional_tree.nodes.append(of_node)
+            conditional_tree.nodes.append(or_node)
 
         if self.token.lexeme == self.SpecialWords['else']:
-            else_node = Tree(tag='then', num_str=self.token.row)
+            else_node = Tree(tag='case', num_str=self.token.row)
             self.get_next_lexeme()
 
             unlabelled_node = self.is_unlabelled()

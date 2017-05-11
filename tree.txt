@@ -3,6 +3,41 @@
 	<compound>
 		<clause>
 			<for>
+				<break/>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<write>
+					<int val="1"/>
+				</write>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<read>
+					<var name="i"/>
+				</read>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<assign>
+					<var name="i" index="1"/>
+					<var name="i"/>
+				</assign>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<cast>
+					<var name="i"/>
+					<var name="b" index="i"/>
+				</cast>
+			</for>
+		</clause>
+		<clause>
+			<for>
 				<write>
 					<op kind="Mod">
 						<int val="1"/>
@@ -113,6 +148,13 @@
 						</write>
 					</clause>
 				</compound>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<call>
+					<var name="abc"/>
+				</call>
 			</for>
 		</clause>
 	</compound>

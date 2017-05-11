@@ -1,4 +1,35 @@
 1	lex:Beg	val:beg
+2	lex:Loop	val:loop
+2	lex:Break	val:break
+2	lex:Semicolon	val:;
+3	lex:Loop	val:loop
+3	lex:Write	val:write
+3	lex:Int	int:1	val:1
+3	lex:Semicolon	val:;
+4	lex:Loop	val:loop
+4	lex:Read	val:read
+4	lex:Id	val:i
+4	lex:Semicolon	val:;
+5	lex:Loop	val:loop
+5	lex:LRB	val:(
+5	lex:Id	val:i
+5	lex:LSB	val:[
+5	lex:Int	int:1	val:1
+5	lex:RSB	val:]
+5	lex:Id	val:i
+5	lex:Let	val::=
+5	lex:RRB	val:)
+5	lex:Semicolon	val:;
+6	lex:Loop	val:loop
+6	lex:LRB	val:(
+6	lex:Id	val:i
+6	lex:Id	val:b
+6	lex:LSB	val:[
+6	lex:Id	val:i
+6	lex:RSB	val:]
+6	lex:Cast	val:cast
+6	lex:RRB	val:)
+6	lex:Semicolon	val:;
 7	lex:Loop	val:loop
 7	lex:Write	val:write
 7	lex:LRB	val:(
@@ -81,4 +112,10 @@
 22	lex:RRB	val:)
 22	lex:Semicolon	val:;
 23	lex:End	val:end
+23	lex:Semicolon	val:;
+24	lex:Loop	val:loop
+24	lex:Call	val:call
+24	lex:Id	val:abc
 24	lex:End	val:end
+24	lex:Semicolon	val:;
+25	lex:End	val:end

@@ -661,6 +661,7 @@ class Parser:
         if self.token.lexeme != self.SpecialWords['call']:
             return False
 
+        self.get_next_lexeme()
         if self.token.lexeme != self.IdentifiersLexemes['id']:
             raise MyException(self.token.row, ' Expected id')
 

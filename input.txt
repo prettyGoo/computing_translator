@@ -1,9 +1,9 @@
 begin
-    {loop break;
+    loop break;
     loop write 1;
     loop read i;
     loop (i[1] i :=);
-    loop (i b[i] cast);}
+    loop (i b[i] cast);
     loop write (1 i mod), i[1], i;
     loop;
     loop begin break; end;
@@ -20,5 +20,6 @@ begin
         write (i i +);
         write (i i -);
         write (i -);
-    end
+    end;
+    loop call abc end;
 end

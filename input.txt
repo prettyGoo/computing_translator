@@ -1,34 +1,20 @@
 begin
-    case 1 of 1:;
-    case 1 of 1: or 2:;
-    case 1 of 1: else;
-    {case 1 of 1: else else;}
-
-    case i of 1: write 1 or 2:;
-    case i of 1: write 1 or 2: write 2;
-
-    case 1 of 1: else write 1;
-    case 1 of 1: begin write 1; read i; end else ;
-
-    case i[1] of 1:;
-
-    case i of 1: case i of 1:;
-    case i of 1: case i of 1:;
-    case i[1] of 1: case 1 of 1: or 2: or 3:;
-
-    {read i;}
-    {begin
-        loop
-            begin
-                loop
-                    break;
-                end;
-                write i(1)
-            end;
-        end;
-        ;
-        loop
-            ; read i;
-        end
-    end}
-end;
+    loop break;
+    loop write 1;
+    loop read i;
+    loop (i[1] i :=);
+    loop (i b[i] cast);
+    loop;
+    loop begin break; end;
+    begin loop break; end;
+    loop loop loop;
+    loop begin
+        loop loop;
+    end;
+    loop begin
+        loop;
+        case 1 of 1:;
+        (i i cast);
+        (i 1e+5 +);
+    end
+end

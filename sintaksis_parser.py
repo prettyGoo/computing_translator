@@ -615,30 +615,19 @@ class Parser:
     def is_cycle(self):
         if self.token.lexeme != self.SpecialWords['loop']:
             return False
+        cycle_tree = Tree(tag='for', num_str=self.token.row)
+        self.get_next_lexeme()
 
-        start_line = self.token.row
         if not self.in_cycle:
             change_in_cycle = True
             self.in_cycle = True
         else:
             change_in_cycle = False
 
-        cycle_tree = Tree(tag='for', num_str=self.token.row)
-        self.get_next_lexeme()
-
-        operator_node = self.is_operator()
-        if not operator_node:
-            raise MyException(start_line, 'Expected operator')
-        while operator_node:
-            cycle_tree.nodes.append(operator_node)
-            if self.token.lexeme != self.SpecialSymbols[';']:
-                raise MyException(self.token.row, 'Expected ";"')
-            self.get_next_lexeme()
-            operator_node = self.is_operator()
-
-        if self.token.lexeme != self.SpecialWords['end']:
-            raise MyException(start_line, 'Expected "end"')
-        self.get_next_lexeme()
+        unlabelled_node = self.is_unlabelled()
+        if not unlabelled_node:
+            raise MyException(self.token.row, 'Expected unlabelled')
+        cycle_tree.nodes.append(unlabelled_node)
 
         if change_in_cycle:
             self.in_cycle = False

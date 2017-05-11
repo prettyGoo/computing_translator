@@ -442,36 +442,27 @@ class Parser:
         if self.token.lexeme == self.SpecialSymbols['(']:
             expression_node = Tree(tag='op', num_str=self.token.row)
             self.get_next_lexeme()
+            first_operand = self.token
 
             operand_node = self.is_operand()
-            first_operand_node = operand_node
             if not operand_node:
                 raise MyException(self.token.row, 'Expected operand')
             expression_node.nodes.append(operand_node)
 
-            operand_node = self.is_operand()
-            second_operand_node = operand_node
-            might_long_operand = True
-            if operand_node:
+            if self.token.lexeme != 'Min':
+                second_operand = self.token
+                operand_node = self.is_operand()
+                if not operand_node:
+                    raise MyException(self.token.row, 'Expected operand')
+                if self.token.lexeme == 'Mod' and (first_operand.lexeme == 'Real' or second_operand.lexeme == 'Real'):
+                    raise MyException(self.token.row, 'Real number is forbidden for mod operation')
                 expression_node.nodes.append(operand_node)
-            else:
-                might_long_operand = False
 
-            if might_long_operand:
-                if self.token.lexeme not in self.MathOperations:
-                    raise MyException(self.token.row, 'Expected math operation')
-
-                if first_operand_node.value == 'Mod' and first_operand_node.tag == 'real' or \
-                   second_operand_node.value == 'Mod' and second_operand_node.tag == 'real':
-                    raise MyException(self.token.row, 'Real is not valid for mod operation')
-
-                self.get_next_lexeme()
-            else:
-                if self.token.lexeme != 'Min':
-                    raise MyException(self.token.row, 'Expected -')
-                kind_node = Tree(tag='kind', value=self.token.lexeme, num_str=self.token.row)
-                expression_node.attributes.append(kind_node)
-                self.get_next_lexeme()
+            if self.token.lexeme not in self.MathOperations:
+                raise MyException(self.token.row, 'Expected operation')
+            kind_node = Tree(tag='kind', value=self.token.lexeme, num_str=self.token.row)
+            expression_node.attributes.append(kind_node)
+            self.get_next_lexeme()
 
             if self.token.lexeme != self.SpecialSymbols[')']:
                 raise MyException(self.token.row, 'Expected ")"')

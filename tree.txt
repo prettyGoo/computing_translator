@@ -1,0 +1,119 @@
+<?xml version="1.0" ?>
+<program>
+	<compound>
+		<clause>
+			<for>
+				<write>
+					<op kind="Mod">
+						<int val="1"/>
+						<var name="i"/>
+					</op>
+					<var name="i" index="1"/>
+					<var name="i"/>
+				</write>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<empty/>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<compound>
+					<clause>
+						<break/>
+					</clause>
+				</compound>
+			</for>
+		</clause>
+		<clause>
+			<compound>
+				<clause>
+					<for>
+						<break/>
+					</for>
+				</clause>
+			</compound>
+		</clause>
+		<clause>
+			<for>
+				<for>
+					<for>
+						<empty/>
+					</for>
+				</for>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<compound>
+					<clause>
+						<for>
+							<for>
+								<empty/>
+							</for>
+						</for>
+					</clause>
+				</compound>
+			</for>
+		</clause>
+		<clause>
+			<for>
+				<compound>
+					<clause>
+						<for>
+							<empty/>
+						</for>
+					</clause>
+					<clause>
+						<case>
+							<int val="1"/>
+							<of>
+								<int val="1"/>
+								<empty/>
+							</of>
+						</case>
+					</clause>
+					<clause>
+						<read>
+							<var name="i"/>
+							<var name="b"/>
+						</read>
+					</clause>
+					<clause>
+						<write>
+							<op kind="Add">
+								<int val="1"/>
+								<int val="1"/>
+							</op>
+						</write>
+					</clause>
+					<clause>
+						<write>
+							<op kind="Add">
+								<var name="i"/>
+								<var name="i"/>
+							</op>
+						</write>
+					</clause>
+					<clause>
+						<write>
+							<op kind="Min">
+								<var name="i"/>
+								<var name="i"/>
+							</op>
+						</write>
+					</clause>
+					<clause>
+						<write>
+							<op kind="Min">
+								<var name="i"/>
+							</op>
+						</write>
+					</clause>
+				</compound>
+			</for>
+		</clause>
+	</compound>
+</program>

@@ -1,4 +1,6 @@
 begin
+    1: loop break;
+    02: loop break;
     loop break;
     loop write 1;
     loop read i;

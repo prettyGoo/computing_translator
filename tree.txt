@@ -2,6 +2,18 @@
 <program>
 	<compound>
 		<clause>
+			<label name="1"/>
+			<for>
+				<break/>
+			</for>
+		</clause>
+		<clause>
+			<label name="2"/>
+			<for>
+				<break/>
+			</for>
+		</clause>
+		<clause>
 			<for>
 				<break/>
 			</for>

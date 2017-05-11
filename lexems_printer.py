@@ -50,6 +50,8 @@ def print_lexeme(output_file, row, lexeme, value, error_message):
                 lexeme = 'TypeInt'
             elif value == 'real':
                 lexeme = 'TypeReal'
+            if lexeme == 'Label':
+                value = str(int(value[:-1])) + ':'
             output_file.write('{}\tlex:{}\tval:{}\n'.format(row, lexeme, value))
     else:
         print('ERROR: empty lexeme or None')

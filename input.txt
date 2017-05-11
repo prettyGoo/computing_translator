@@ -22,4 +22,5 @@ begin
         write (i -);
     end;
     loop call abc end;
+    loop goto 01;
 end

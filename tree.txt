@@ -157,5 +157,10 @@
 				</call>
 			</for>
 		</clause>
+		<clause>
+			<for>
+				<goto label="01"/>
+			</for>
+		</clause>
 	</compound>
 </program>

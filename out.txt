@@ -118,4 +118,8 @@
 24	lex:Id	val:abc
 24	lex:End	val:end
 24	lex:Semicolon	val:;
-25	lex:End	val:end
+25	lex:Loop	val:loop
+25	lex:Goto	val:goto
+25	lex:Int	int:1	val:01
+25	lex:Semicolon	val:;
+26	lex:End	val:end

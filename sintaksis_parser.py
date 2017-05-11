@@ -349,7 +349,7 @@ class Parser:
             self.get_next_lexeme()
             variable_node = self.is_variable()
             if not variable_node:
-                raise MyException(self.token.row, 'Expected variable')  # ���������� ��������� ����������
+                raise MyException(self.token.row, 'Expected variable')
             read_node.nodes.append(variable_node)
 
             if self.token.lexeme != self.SpecialSymbols[',']:

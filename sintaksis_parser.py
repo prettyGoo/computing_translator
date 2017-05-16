@@ -222,7 +222,10 @@ class Parser:
                 return compound_tree
             op_node = self.is_operator()
             if not op_node:
-                raise MyException(self.token.row, 'Expected operator')
+                if self.token.lexeme == 'Real':
+                    raise MyException(self.token.row, 'Expected correct label')
+                else:
+                    raise MyException(self.token.row, 'Expected operator')
             compound_tree.nodes.append(op_node)
             if self.token.lexeme != self.SpecialSymbols[';']:
                 expected_operator = False
@@ -323,7 +326,6 @@ class Parser:
 
     def is_empty(self):
         if self.token.lexeme in self.IDWordsAndSymbolAfterOperator:
-            print('empty')
             return Tree(tag='empty', num_str=self.token.row)
         return False
 
@@ -590,7 +592,7 @@ class Parser:
             or_node.nodes.append(unlabelled_node)
             conditional_tree.nodes.append(or_node)
 
-        if self.token.lexeme == self.SpecialWords['else']:
+        while self.token.lexeme == self.SpecialWords['else']:
             else_node = Tree(tag='case', num_str=self.token.row)
             self.get_next_lexeme()
 
@@ -599,6 +601,11 @@ class Parser:
                 raise MyException(self.token.row, 'Expected operator')
             else_node.nodes.append(unlabelled_node)
             conditional_tree.nodes.append(else_node)
+
+            a = self.num_lexeme
+            self.get_next_lexeme()
+            if self.token.lexeme != self.SpecialWords['else']:
+                self.get_previous_lexeme(a)
 
         return conditional_tree
     #################################################################

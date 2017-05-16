@@ -1,133 +1,344 @@
 1	lex:Beg	val:beg
 2	lex:Label	val:1:
-2	lex:Loop	val:loop
-2	lex:Break	val:break
+2	lex:Case	val:case
+2	lex:Int	int:1	val:1
+2	lex:Of	val:of
+2	lex:Label	val:1:
 2	lex:Semicolon	val:;
 3	lex:Label	val:2:
-3	lex:Loop	val:loop
-3	lex:Break	val:break
+3	lex:Case	val:case
+3	lex:Int	int:1	val:1
+3	lex:Of	val:of
+3	lex:Label	val:1:
+3	lex:Or	val:or
+3	lex:Label	val:8:
+3	lex:Write	val:write
+3	lex:Int	int:1	val:1
 3	lex:Semicolon	val:;
-4	lex:Loop	val:loop
-4	lex:Break	val:break
+4	lex:Case	val:case
+4	lex:Int	int:1	val:1
+4	lex:Of	val:of
+4	lex:Label	val:1:
+4	lex:Or	val:or
+4	lex:Label	val:2:
 4	lex:Semicolon	val:;
-5	lex:Loop	val:loop
-5	lex:Write	val:write
+5	lex:Case	val:case
 5	lex:Int	int:1	val:1
+5	lex:Of	val:of
+5	lex:Label	val:1:
+5	lex:Or	val:or
+5	lex:Label	val:2:
+5	lex:Else	val:else
 5	lex:Semicolon	val:;
-6	lex:Loop	val:loop
-6	lex:Read	val:read
-6	lex:Id	val:i
+6	lex:Case	val:case
+6	lex:Int	int:1	val:1
+6	lex:Of	val:of
+6	lex:Label	val:1:
+6	lex:Else	val:else
 6	lex:Semicolon	val:;
-7	lex:Loop	val:loop
-7	lex:LRB	val:(
-7	lex:Id	val:i
-7	lex:LSB	val:[
+7	lex:Case	val:case
 7	lex:Int	int:1	val:1
-7	lex:RSB	val:]
-7	lex:Id	val:i
-7	lex:Let	val::=
-7	lex:RRB	val:)
+7	lex:Of	val:of
+7	lex:Label	val:1:
 7	lex:Semicolon	val:;
-8	lex:Loop	val:loop
-8	lex:LRB	val:(
-8	lex:Id	val:i
-8	lex:Id	val:b
-8	lex:LSB	val:[
-8	lex:Id	val:i
-8	lex:RSB	val:]
-8	lex:Cast	val:cast
-8	lex:RRB	val:)
+8	lex:Case	val:case
+8	lex:Int	int:1	val:1
+8	lex:Of	val:of
+8	lex:Label	val:1:
+8	lex:Else	val:else
 8	lex:Semicolon	val:;
-9	lex:Loop	val:loop
+8	lex:Else	val:else
+8	lex:Semicolon	val:;
+9	lex:Case	val:case
+9	lex:Int	int:1	val:1
+9	lex:Of	val:of
+9	lex:Label	val:1:
+9	lex:Else	val:else
 9	lex:Write	val:write
-9	lex:LRB	val:(
 9	lex:Int	int:1	val:1
-9	lex:Id	val:i
-9	lex:Mod	val:mod
-9	lex:RRB	val:)
-9	lex:Comma	val:,
-9	lex:Id	val:i
-9	lex:LSB	val:[
-9	lex:Int	int:1	val:1
-9	lex:RSB	val:]
-9	lex:Comma	val:,
-9	lex:Id	val:i
+9	lex:Else	val:else
+9	lex:Write	val:write
+9	lex:Int	int:2	val:2
 9	lex:Semicolon	val:;
-10	lex:Loop	val:loop
+10	lex:Case	val:case
+10	lex:Int	int:1	val:1
+10	lex:Of	val:of
+10	lex:Label	val:1:
+10	lex:Or	val:or
+10	lex:Label	val:2:
+10	lex:Else	val:else
 10	lex:Semicolon	val:;
-11	lex:Loop	val:loop
-11	lex:Beg	val:beg
-11	lex:Break	val:break
+10	lex:Else	val:else
+10	lex:Write	val:write
+10	lex:Int	int:1	val:1
+10	lex:Semicolon	val:;
+10	lex:Else	val:else
+10	lex:Semicolon	val:;
+11	lex:Case	val:case
+11	lex:Int	int:1	val:1
+11	lex:Of	val:of
+11	lex:Label	val:1:
+11	lex:Write	val:write
+11	lex:Int	int:1	val:1
+11	lex:Or	val:or
+11	lex:Label	val:2:
+11	lex:Else	val:else
 11	lex:Semicolon	val:;
-11	lex:End	val:end
+11	lex:Else	val:else
+11	lex:Write	val:write
+11	lex:Int	int:1	val:1
 11	lex:Semicolon	val:;
-12	lex:Beg	val:beg
-12	lex:Loop	val:loop
-12	lex:Break	val:break
+11	lex:Else	val:else
+11	lex:Semicolon	val:;
+12	lex:Case	val:case
+12	lex:Int	int:1	val:1
+12	lex:Of	val:of
+12	lex:Label	val:1:
 12	lex:Semicolon	val:;
-12	lex:End	val:end
-12	lex:Semicolon	val:;
-13	lex:Loop	val:loop
-13	lex:Loop	val:loop
-13	lex:Loop	val:loop
+13	lex:Case	val:case
+13	lex:Int	int:1	val:1
+13	lex:Of	val:of
+13	lex:Label	val:1:
+13	lex:Write	val:write
+13	lex:Int	int:1	val:1
 13	lex:Semicolon	val:;
-14	lex:Loop	val:loop
-14	lex:Beg	val:beg
-15	lex:Loop	val:loop
-15	lex:Loop	val:loop
-15	lex:Semicolon	val:;
-16	lex:End	val:end
+14	lex:Case	val:case
+14	lex:Int	int:1	val:1
+14	lex:Of	val:of
+14	lex:Label	val:1:
+14	lex:Else	val:else
+14	lex:Write	val:write
+14	lex:Int	int:1	val:1
+14	lex:Semicolon	val:;
+16	lex:Case	val:case
+16	lex:Int	int:1	val:1
+16	lex:Of	val:of
+16	lex:Label	val:1:
+16	lex:Else	val:else
+16	lex:Write	val:write
+16	lex:Int	int:1	val:1
+16	lex:Else	val:else
+16	lex:Write	val:write
+16	lex:Int	int:2	val:2
 16	lex:Semicolon	val:;
-17	lex:Loop	val:loop
-17	lex:Beg	val:beg
-18	lex:Loop	val:loop
+18	lex:Case	val:case
+18	lex:Id	val:i
+18	lex:Of	val:of
+18	lex:Label	val:1:
+18	lex:Write	val:write
+18	lex:Int	int:1	val:1
+18	lex:Or	val:or
+18	lex:Label	val:2:
 18	lex:Semicolon	val:;
 19	lex:Case	val:case
-19	lex:Int	int:1	val:1
+19	lex:Id	val:i
 19	lex:Of	val:of
 19	lex:Label	val:1:
+19	lex:Write	val:write
+19	lex:Int	int:1	val:1
+19	lex:Or	val:or
+19	lex:Label	val:2:
+19	lex:Write	val:write
+19	lex:Int	int:2	val:2
 19	lex:Semicolon	val:;
-20	lex:Read	val:read
-20	lex:Id	val:i
-20	lex:Comma	val:,
-20	lex:Id	val:b
-20	lex:Semicolon	val:;
+21	lex:Case	val:case
+21	lex:Int	int:1	val:1
+21	lex:Of	val:of
+21	lex:Label	val:1:
+21	lex:Else	val:else
 21	lex:Write	val:write
-21	lex:LRB	val:(
 21	lex:Int	int:1	val:1
-21	lex:Int	int:1	val:1
-21	lex:Add	val:+
-21	lex:RRB	val:)
 21	lex:Semicolon	val:;
+22	lex:Case	val:case
+22	lex:Int	int:1	val:1
+22	lex:Of	val:of
+22	lex:Label	val:1:
+22	lex:Beg	val:beg
 22	lex:Write	val:write
-22	lex:LRB	val:(
-22	lex:Id	val:i
-22	lex:Id	val:i
-22	lex:Add	val:+
-22	lex:RRB	val:)
+22	lex:Int	int:1	val:1
 22	lex:Semicolon	val:;
-23	lex:Write	val:write
-23	lex:LRB	val:(
-23	lex:Id	val:i
-23	lex:Id	val:i
-23	lex:Min	val:-
-23	lex:RRB	val:)
-23	lex:Semicolon	val:;
-24	lex:Write	val:write
-24	lex:LRB	val:(
+22	lex:Read	val:read
+22	lex:Id	val:i
+22	lex:Semicolon	val:;
+22	lex:End	val:end
+22	lex:Else	val:else
+22	lex:Semicolon	val:;
+24	lex:Case	val:case
 24	lex:Id	val:i
-24	lex:Min	val:-
-24	lex:RRB	val:)
+24	lex:LSB	val:[
+24	lex:Int	int:1	val:1
+24	lex:RSB	val:]
+24	lex:Of	val:of
+24	lex:Label	val:1:
 24	lex:Semicolon	val:;
-25	lex:End	val:end
-25	lex:Semicolon	val:;
-26	lex:Loop	val:loop
-26	lex:Call	val:call
-26	lex:Id	val:abc
-26	lex:End	val:end
+26	lex:Case	val:case
+26	lex:Id	val:i
+26	lex:Of	val:of
+26	lex:Label	val:1:
+26	lex:Case	val:case
+26	lex:Id	val:i
+26	lex:Of	val:of
+26	lex:Label	val:1:
 26	lex:Semicolon	val:;
-27	lex:Loop	val:loop
-27	lex:Goto	val:goto
-27	lex:Int	int:1	val:01
+27	lex:Case	val:case
+27	lex:Id	val:i
+27	lex:Of	val:of
+27	lex:Label	val:1:
+27	lex:Case	val:case
+27	lex:Id	val:i
+27	lex:Of	val:of
+27	lex:Label	val:1:
 27	lex:Semicolon	val:;
-28	lex:End	val:end
+28	lex:Case	val:case
+28	lex:Id	val:i
+28	lex:LSB	val:[
+28	lex:Int	int:1	val:1
+28	lex:RSB	val:]
+28	lex:Of	val:of
+28	lex:Label	val:1:
+28	lex:Case	val:case
+28	lex:Int	int:1	val:1
+28	lex:Of	val:of
+28	lex:Label	val:1:
+28	lex:Or	val:or
+28	lex:Label	val:2:
+28	lex:Or	val:or
+28	lex:Label	val:3:
+28	lex:Semicolon	val:;
+29	lex:Beg	val:beg
+30	lex:Loop	val:loop
+30	lex:Break	val:break
+30	lex:Semicolon	val:;
+31	lex:Loop	val:loop
+31	lex:Break	val:break
+31	lex:Semicolon	val:;
+32	lex:Loop	val:loop
+32	lex:Break	val:break
+32	lex:Semicolon	val:;
+33	lex:Loop	val:loop
+33	lex:Write	val:write
+33	lex:Int	int:1	val:1
+33	lex:Semicolon	val:;
+34	lex:Loop	val:loop
+34	lex:Read	val:read
+34	lex:Id	val:i
+34	lex:Semicolon	val:;
+35	lex:Loop	val:loop
+35	lex:LRB	val:(
+35	lex:Id	val:i
+35	lex:LSB	val:[
+35	lex:Int	int:1	val:1
+35	lex:RSB	val:]
+35	lex:Id	val:i
+35	lex:Let	val::=
+35	lex:RRB	val:)
+35	lex:Semicolon	val:;
+36	lex:Loop	val:loop
+36	lex:LRB	val:(
+36	lex:Id	val:i
+36	lex:Id	val:b
+36	lex:LSB	val:[
+36	lex:Id	val:i
+36	lex:RSB	val:]
+36	lex:Cast	val:cast
+36	lex:RRB	val:)
+36	lex:Semicolon	val:;
+37	lex:Loop	val:loop
+37	lex:Write	val:write
+37	lex:LRB	val:(
+37	lex:Int	int:1	val:1
+37	lex:Id	val:i
+37	lex:Mod	val:mod
+37	lex:RRB	val:)
+37	lex:Comma	val:,
+37	lex:Id	val:i
+37	lex:LSB	val:[
+37	lex:Int	int:1	val:1
+37	lex:RSB	val:]
+37	lex:Comma	val:,
+37	lex:Id	val:i
+37	lex:Semicolon	val:;
+38	lex:Loop	val:loop
+38	lex:Semicolon	val:;
+39	lex:Loop	val:loop
+39	lex:Beg	val:beg
+39	lex:Break	val:break
+39	lex:Semicolon	val:;
+39	lex:End	val:end
+39	lex:Semicolon	val:;
+40	lex:Beg	val:beg
+40	lex:Loop	val:loop
+40	lex:Break	val:break
+40	lex:Semicolon	val:;
+40	lex:End	val:end
+40	lex:Semicolon	val:;
+41	lex:Loop	val:loop
+41	lex:Loop	val:loop
+41	lex:Loop	val:loop
+41	lex:Semicolon	val:;
+42	lex:Loop	val:loop
+42	lex:Beg	val:beg
+43	lex:Loop	val:loop
+43	lex:Loop	val:loop
+43	lex:Semicolon	val:;
+44	lex:End	val:end
+44	lex:Semicolon	val:;
+45	lex:Loop	val:loop
+45	lex:Beg	val:beg
+46	lex:Loop	val:loop
+46	lex:Semicolon	val:;
+47	lex:Case	val:case
+47	lex:Int	int:1	val:1
+47	lex:Of	val:of
+47	lex:Label	val:1:
+47	lex:Semicolon	val:;
+48	lex:Read	val:read
+48	lex:Id	val:i
+48	lex:Comma	val:,
+48	lex:Id	val:b
+48	lex:Semicolon	val:;
+49	lex:Write	val:write
+49	lex:LRB	val:(
+49	lex:Int	int:1	val:1
+49	lex:Int	int:1	val:1
+49	lex:Add	val:+
+49	lex:RRB	val:)
+49	lex:Semicolon	val:;
+50	lex:Write	val:write
+50	lex:LRB	val:(
+50	lex:Id	val:i
+50	lex:Id	val:i
+50	lex:Add	val:+
+50	lex:RRB	val:)
+50	lex:Semicolon	val:;
+51	lex:Write	val:write
+51	lex:LRB	val:(
+51	lex:Id	val:i
+51	lex:Id	val:i
+51	lex:Min	val:-
+51	lex:RRB	val:)
+51	lex:Semicolon	val:;
+52	lex:Write	val:write
+52	lex:LRB	val:(
+52	lex:Id	val:i
+52	lex:Min	val:-
+52	lex:RRB	val:)
+52	lex:Semicolon	val:;
+53	lex:End	val:end
+53	lex:Semicolon	val:;
+54	lex:End	val:end
+54	lex:Semicolon	val:;
+55	lex:Loop	val:loop
+55	lex:Call	val:call
+55	lex:Id	val:abc
+55	lex:End	val:end
+55	lex:Semicolon	val:;
+56	lex:Loop	val:loop
+56	lex:Goto	val:goto
+56	lex:Int	int:1	val:01
+56	lex:Semicolon	val:;
+57	lex:Loop	val:loop
+57	lex:Goto	val:goto
+57	lex:Int	int:1	val:1
+57	lex:Semicolon	val:;
+58	lex:End	val:end

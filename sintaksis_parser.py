@@ -53,7 +53,7 @@ class Parser:
         self.lexemes = []
         self.lexemes = self.tokenize_lexemes(file_content)
         if len(self.lexemes) == 0 or (len(self.lexemes) == 1 and self.lexemes[0].lexeme == 'eof'):
-            print('Error:Params: Empty file\n')
+            print('Error:Empty file')
             exit(0)
 
         self.num_lexeme = 0

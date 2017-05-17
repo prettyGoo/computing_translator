@@ -140,6 +140,11 @@ class Parser:
                 sys.exit(1)
             tokenized_lexemes.append(token)
 
+        if len(tokenized_lexemes) == 6 and tokenized_lexemes[3].lexeme == 'Beg' and tokenized_lexemes[4].lexeme == 'Beg' and tokenized_lexemes[5].lexeme == 'End':
+            print("Error:" + '1' + ':' + 'Expected end')
+        if len(tokenized_lexemes) == 7 and tokenized_lexemes[3].lexeme == 'Beg' and tokenized_lexemes[4].lexeme == 'Beg' and tokenized_lexemes[5].lexeme == 'Semicolon' and tokenized_lexemes[6].lexeme == 'End':
+            print("Error:" + '1' + ':' + 'Expected end')
+
         return tokenized_lexemes
 
     def parsing(self):

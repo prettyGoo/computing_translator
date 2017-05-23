@@ -158,6 +158,7 @@ def get_next_lexema():
         status, rests = Is_dec_int_or_label(get_scanner_params())
         result = check_automat_output(status, rests)
         if result:
+            row += rests['additional_rows']
             return result
         file.seek(base_position)
 

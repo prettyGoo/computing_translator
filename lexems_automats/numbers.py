@@ -100,30 +100,40 @@ def Is_hex_int(scanner_params):
 def Is_dec_int_or_label(scanner_params):
     file, _, _, base_position, _ = scanner_params
     local_lexeme = ''
+    may_detect_with_split = False
+    detect_with_split = False
 
     char = file.read(1).lower()
     local_offset = 1
+    additional = 0
+
     if is_digit(char):
         local_lexeme = 'Int'
         while True:
             char = file.read(1).lower()
-            if not is_digit(char):
+            if not ((is_digit(char) and not may_detect_with_split) or is_split(char)):
                 if char == 'd':  # it is still dec integer
                     local_offset += 1
                 elif is_colon(char):  # it is a label
                     local_offset += 1
                     local_lexeme = 'Label'
-                file.seek(base_position+local_offset)
+                    if may_detect_with_split:
+                        detect_with_split = True
+                file.seek(base_position+local_offset+additional)
                 break
             else:
+                if is_split(char):
+                    may_detect_with_split = True
+                if char == '\n':
+                    additional += 1
                 local_offset += 1
 
         afterchar = file.read(1).lower() if not is_new_line(char) else ''
-        value = get_detected_value(file, base_position, local_offset)
+        value = get_detected_value(file, base_position, local_offset, detect_with_split=detect_with_split)
 
-        if local_lexeme == 'Int' and not (is_letter(afterchar) or is_digit(afterchar)) \
+        if local_lexeme == 'Int' and not (value.endswith('d') and (is_letter(afterchar) or is_digit(afterchar))) \
            or local_lexeme == 'Label' and (is_split(afterchar) or afterchar == ';'):
-                return True, {'lexeme': local_lexeme, 'offset': local_offset, 'value': value}
+                return True, {'lexeme': local_lexeme, 'offset': local_offset+additional, 'value': value, 'additional_rows': additional}
         else:
             return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char}
     else:

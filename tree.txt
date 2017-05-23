@@ -28,6 +28,28 @@
 			</case>
 		</clause>
 		<clause>
+			<label name="3"/>
+			<case>
+				<int val="1"/>
+				<of>
+					<int val="1"/>
+					<empty/>
+				</of>
+			</case>
+		</clause>
+		<clause>
+			<label name="4"/>
+			<for>
+				<empty/>
+			</for>
+		</clause>
+		<clause>
+			<label name="5"/>
+			<for>
+				<empty/>
+			</for>
+		</clause>
+		<clause>
 			<case>
 				<int val="1"/>
 				<of>
@@ -380,6 +402,14 @@
 					<for>
 						<assign>
 							<var name="i" index="1"/>
+							<var name="i"/>
+						</assign>
+					</for>
+				</clause>
+				<clause>
+					<for>
+						<assign>
+							<int val="1"/>
 							<var name="i"/>
 						</assign>
 					</for>

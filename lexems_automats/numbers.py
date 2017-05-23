@@ -98,7 +98,8 @@ def Is_hex_int(scanner_params):
 
 
 def Is_dec_int_or_label(scanner_params):
-    file, _, _, base_position, _ = scanner_params
+    file, _, row, base_position, _ = scanner_params
+    # print(row)
     local_lexeme = ''
     may_detect_with_split = False
     detect_with_split = False
@@ -114,7 +115,8 @@ def Is_dec_int_or_label(scanner_params):
             if not ((is_digit(char) and not may_detect_with_split) or is_split(char)):
                 if char == 'd':  # it is still dec integer
                     local_offset += 1
-                elif is_colon(char):  # it is a label
+                # elif is_colon(char) and file.read(1) != '=':  # it is a label\
+                elif is_colon(char):
                     local_offset += 1
                     local_lexeme = 'Label'
                     if may_detect_with_split:

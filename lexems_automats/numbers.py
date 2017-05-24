@@ -137,7 +137,56 @@ def Is_dec_int_or_label(scanner_params):
            or local_lexeme == 'Label' and (is_split(afterchar) or afterchar == ';'):
                 return True, {'lexeme': local_lexeme, 'offset': local_offset+additional, 'value': value, 'additional_rows': additional}
         else:
-            return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char}
+            return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char, 'additional_rows': 0}
+    else:
+        return False, None
+
+
+def Is__old_dec_int_or_label(scanner_params):
+    file, _, row, base_position, _ = scanner_params
+    additional_rows = 0
+
+    char = file.read(1).lower()
+    local_offset = 1
+    split_offset = 0
+
+    if is_digit(char):
+        local_lexeme = 'Int'
+        while True:
+            char = file.read(1).lower()
+            if is_digit(char) and split_offset == 0:
+                local_offset += 1
+            elif is_split(char):
+                split_offset += 1
+                if is_new_line(char):
+                    additional_rows += 1
+            else:
+                if char == 'd':
+                    local_offset += 1
+                    file.seek(base_position+local_offset)
+                elif is_colon(char):
+                    local_offset += 1
+                    local_lexeme = 'Label'
+                    file.seek(base_position+local_offset+split_offset)
+                else:
+                    file.seek(base_position+local_offset)
+                break
+
+        afterchar = file.read(1).lower() if not is_new_line(char) else ''
+        if local_lexeme == 'Int':
+            value = get_detected_value(file, base_position, local_offset)
+        else:
+            value = get_detected_value(file, base_position, local_offset+split_offset, True)
+
+        if local_lexeme == 'Int' and not (is_letter(afterchar) or is_digit(afterchar)):
+            return True, {'lexeme': local_lexeme, 'offset': local_offset, 'value': value, 'additional_rows': additional_rows}
+        elif local_lexeme == 'Label' and (is_split(afterchar) or afterchar == ';'):
+            # value = value.replace(' ', '')
+            # value = value.replace('\t', '')
+            # value = value.replace('\n', '')
+            return True, {'lexeme': local_lexeme, 'offset': local_offset+2, 'value': value, 'additional_rows': additional_rows}
+        else:
+            return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char, 'additional_rows': 0}
     else:
         return False, None
 

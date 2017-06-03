@@ -1,3 +1,0 @@
-begin
-; int i[10]
-end

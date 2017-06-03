@@ -2,3 +2,8 @@
 /lex.txt
 */__pycache__/*
 __pycache__/
+out_success.txt
+out_failure.txt
+out.txt
+tree.txt
+undir_scan_cpp

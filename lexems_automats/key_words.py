@@ -10,7 +10,7 @@ def is_kw_read(chars):
 
 
 def is_kw_beg(chars):
-    return chars == 'begin', 'Begin'
+    return chars == 'begin', 'Beg'
 
 
 def is_kw_end(chars):

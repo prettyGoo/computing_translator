@@ -12,11 +12,10 @@ from lexems_printer import print_lexeme
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 
-
 try:
     file = open('%s' % input_file, 'r')
 except FileNotFoundError:
-    print('Aborted: the file you are looking for does not exist\n')
+    print('Error:{}:The file does not exist\n'.format(input_file))
     sys.exit(0)
 
 output_file = open('%s' % output_file, 'w')
@@ -107,7 +106,7 @@ def get_next_lexema():
             comment_loop()
             comment_mode = True
             tell_new_position()
-            return 'LCB', '{', None
+            return 'Comment', '', None
 
         if is_right_curly_bracket(char):
             if not comment_mode:
@@ -159,6 +158,7 @@ def get_next_lexema():
         status, rests = Is_dec_int_or_label(get_scanner_params())
         result = check_automat_output(status, rests)
         if result:
+            row += rests['additional_rows']
             return result
         file.seek(base_position)
 
@@ -173,8 +173,12 @@ def get_next_lexema():
             tell_new_position()
             return 'Comma', ',', None
         if is_colon(char):
-            tell_new_position()
-            return 'Colon', ':', None
+            tell = file.tell()
+            if file.read(1) == '=':
+                file.seek(tell)
+            else:
+                tell_new_position()
+                return 'Colon', ':', None
         if is_semicolon(char):
             tell_new_position()
             return 'Semicolon', ';', None
@@ -248,9 +252,17 @@ def get_next_lexema():
         return result
 
 
-while True:
-    if not lexeme == 'EOF':
-        lexeme, value, error_message = get_next_lexema()
-        print_lexeme(output_file, row, lexeme, value, error_message)
-    else:
-        break
+def run():
+    global lexeme
+
+    while True:
+        if not lexeme == 'EOF':
+            lexeme, value, error_message = get_next_lexema()
+            print_lexeme(output_file, row, lexeme, value, error_message)
+        else:
+            break
+
+    file.close()
+
+
+run()

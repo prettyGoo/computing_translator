@@ -112,10 +112,12 @@ def Is_dec_int_or_label(scanner_params):
         local_lexeme = 'Int'
         while True:
             char = file.read(1).lower()
+            if '' == char:
+                break
+
             if not ((is_digit(char) and not may_detect_with_split) or is_split(char)):
                 if char == 'd':  # it is still dec integer
                     local_offset += 1
-                # elif is_colon(char) and file.read(1) != '=':  # it is a label\
                 elif is_colon(char):
                     local_offset += 1
                     local_lexeme = 'Label'
@@ -133,8 +135,14 @@ def Is_dec_int_or_label(scanner_params):
         afterchar = file.read(1).lower() if not is_new_line(char) else ''
         value = get_detected_value(file, base_position, local_offset, detect_with_split=detect_with_split)
 
+        # if local_lexeme == 'Label' and afterchar == 'w':
+        #     local_offset += 1
+
         if local_lexeme == 'Int' and not (value.endswith('d') and (is_letter(afterchar) or is_digit(afterchar))) \
-           or local_lexeme == 'Label' and (is_split(afterchar) or afterchar == ';'):
+           or local_lexeme == 'Label' and (is_split(afterchar) or afterchar == ';' or is_letter(afterchar)):
+                value = value.replace('\t', '')
+                value = value.replace(' ', '')
+                value = value.replace('\n', '')
                 return True, {'lexeme': local_lexeme, 'offset': local_offset+additional, 'value': value, 'additional_rows': additional}
         else:
             return False, {'lexeme': 'Error', 'error': "Dec integer's or label's forms are wrong", 'value': value + char, 'additional_rows': 0}
